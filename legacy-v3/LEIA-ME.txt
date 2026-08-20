@@ -1,0 +1,70 @@
+SUPERMERCADO SC CENTRAL - V3
+
+A V3 foi construída em cima da V2 sem remover as funcionalidades anteriores.
+A estrutura continua em HTML + CSS + JavaScript puro e agora inclui um painel administrativo funcional para demonstração.
+
+ARQUIVOS PRINCIPAIS
+- index.html             Loja / catálogo
+- style.css              CSS acumulado V1 + V2
+- script.js              JavaScript acumulado V1 + V2
+- v3.css                 Evoluções visuais da V3
+- v3.js                  Evoluções funcionais da V3
+- v3-data.js             Dados padrão compartilhados
+- admin.html             Painel administrativo V3
+- admin.css              Estilos do painel
+- admin.js               Lógica do painel
+- assets/logo-sc-central.png
+
+NOVIDADES DA V3
+- Carrossel promocional dinâmico na página inicial
+- 32 produtos de demonstração
+- Novo departamento de Frios
+- Área visual de departamentos
+- Estoque por produto
+- Sinalização de estoque baixo e sem estoque
+- Filtro "Destaques"
+- Filtro "Em estoque"
+- Suporte a foto real de produto
+- Cadastro de imagem por URL no painel
+- Upload local de imagem para demonstração (Data URL, até 1,5 MB)
+- Favoritos com drawer próprio
+- Histórico de produtos vistos recentemente
+- Bairros/regiões configuráveis
+- Taxa de entrega por bairro/região
+- Pedido mínimo por bairro/região
+- Total do checkout incluindo taxa estimada
+- Identificador automático do pedido
+- Pedidos salvos em histórico local
+- Painel administrativo completo
+- CRUD de produtos
+- CRUD de banners
+- CRUD de cupons
+- CRUD de regiões de entrega
+- Configuração do WhatsApp pelo painel
+- Configurações gerais da loja
+- Dashboard com indicadores
+- Exportação dos dados em JSON
+- Restauração dos dados padrão V3
+- Sincronização entre loja/painel via localStorage
+
+COMO USAR
+1. Abra index.html para acessar a loja.
+2. Abra admin.html para acessar o painel administrativo.
+3. No painel, vá em Configurações e informe o WhatsApp real da loja.
+4. Cadastre/edite produtos, preços, estoque, fotos, banners, cupons e regiões.
+5. Atualize a aba da loja para visualizar as alterações.
+
+WHATSAPP
+Use somente números, por exemplo:
+5582999999999
+
+IMPORTANTE SOBRE ESTA VERSÃO
+A V3 funciona sem backend utilizando localStorage. Isto permite demonstrar praticamente todo o fluxo ao cliente final diretamente no navegador.
+
+Como os dados estão no navegador:
+- outro computador não verá os mesmos cadastros;
+- limpar os dados do navegador apaga as alterações locais;
+- o painel ainda não possui autenticação real de servidor;
+- não há sincronização entre vários atendentes/dispositivos.
+
+A próxima evolução natural é manter toda esta interface e trocar o armazenamento local por API + banco de dados, adicionando login administrativo, usuários, permissões e sincronização real.

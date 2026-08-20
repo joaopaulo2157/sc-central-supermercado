@@ -1,0 +1,310 @@
+/* ==========================================================
+   SUPERMERCADO SC CENTRAL - V5
+   Tipografia ampliada + fotografia de produtos + refinamentos.
+   Mantém integralmente as camadas anteriores e evolui por override.
+   ========================================================== */
+
+:root{
+  --v5-reading-size:16px;
+  --v5-small:13px;
+  --v5-label:12px;
+}
+
+body{
+  font-size:var(--v5-reading-size);
+  line-height:1.6;
+}
+
+/* Cabeçalho mais legível */
+.topbar{font-size:14px}
+.search input{font-size:15px}
+.search button{font-size:14px}
+.cart-button__label small{font-size:12px}
+.cart-button__label strong{font-size:15px}
+.nav a{font-size:15px}
+
+/* Chamada principal */
+.eyebrow{font-size:13px}
+.hero__copy > p{font-size:19px;line-height:1.72}
+.btn{font-size:15px;min-height:52px;padding-inline:23px}
+.hero__stats span{font-size:13px}
+.hero-card__badge{font-size:12px}
+.hero-card__product small,.hero-card__price small{font-size:13px}
+.floating-card strong{font-size:14px}
+.floating-card small{font-size:12px}
+.ticker-track span{font-size:14px}
+
+/* Benefícios e seções */
+.quick-card strong{font-size:15px}
+.quick-card span{font-size:13px}
+.section-heading > p{font-size:16px}
+.category-card strong{font-size:14px}
+.countdown{font-size:14px}
+.deal-banner__text > span{font-size:12px}
+.deal-banner__text p{font-size:16px}
+.product-tools span{font-size:14px}
+.product-tools select{font-size:14px;padding:12px 14px}
+
+/* V5: cards maiores para dar espaço às fotos e textos */
+@media (min-width:1081px){
+  .products-grid{grid-template-columns:repeat(3,1fr);gap:22px}
+}
+.product-card{padding:16px;border-radius:24px}
+.product-image{
+  height:275px;
+  background:linear-gradient(145deg,#ffffff,#eef3f9);
+  border:1px solid #e6ecf4;
+}
+.product-image.has-photo{
+  background:linear-gradient(145deg,#fff,#f7f9fc);
+}
+.product-photo{
+  inset:12px !important;
+  width:calc(100% - 24px) !important;
+  height:calc(100% - 24px) !important;
+  object-fit:contain !important;
+  border-radius:14px;
+  background:#fff;
+}
+.product-card:hover .product-photo{transform:scale(1.045)}
+.v5-photo-fallback{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:76px;
+  opacity:.16;
+  z-index:0;
+}
+.recent-card__image .v5-photo-fallback,
+.favorite-row__image .v5-photo-fallback{
+  position:static;
+  font-size:28px;
+  opacity:.32;
+}
+.quick-modal__visual .v5-photo-fallback{
+  position:absolute;
+  inset:0;
+  font-size:100px;
+}
+.product-badge{font-size:11px;padding:8px 10px}
+.product-card__quick{font-size:11px;padding:10px 13px}
+.product-category{font-size:12px}
+.product-name{
+  min-height:52px;
+  font-size:18px;
+  line-height:1.42;
+  margin:9px 0 8px;
+}
+.product-unit{font-size:13px}
+.product-stock{font-size:12px}
+.old-price{font-size:13px}
+.price{font-size:27px}
+.product-cart-qty{font-size:12px;min-width:92px;padding:0 9px}
+.add-cart{width:50px;height:50px;font-size:22px}
+
+/* Conteúdos auxiliares */
+.shopping-mode__intro p,
+.benefits__copy > p,
+.newsletter__box p,
+.faq-intro p{font-size:16px}
+.shopping-mode__tags span{font-size:12px}
+.mode-card strong{font-size:18px}
+.mode-card p{font-size:13px}
+.step strong{font-size:15px}
+.step small{font-size:13px}
+.faq-list summary{font-size:15px}
+.faq-list details p{font-size:14px}
+.footer__grid > div{font-size:14px}
+.footer__grid strong{font-size:14px}
+.footer__bottom{font-size:12px}
+
+/* Carrinho e checkout mais fáceis de ler */
+.cart-drawer__header h2{font-size:29px}
+.cart-item__name{font-size:14px}
+.cart-item__price{font-size:14px}
+.qty-value{font-size:13px}
+.cart-summary-row,.cart-summary-total{font-size:14px}
+.cart-note{font-size:11px}
+.coupon-box input,.coupon-box button{font-size:12px}
+.coupon-message{font-size:11px}
+.delivery-progress__top{font-size:11px}
+.checkout-step-title strong{font-size:15px}
+.field > span{font-size:12px}
+.field input,.field select,.field textarea{font-size:14px;padding:13px 14px}
+.choice-card strong{font-size:14px}
+.choice-card small{font-size:11px}
+.checkout-review span{font-size:11px}
+.whatsapp-finalize small{font-size:10px}
+.whatsapp-finalize strong{font-size:14px}
+.phone__message{font-size:12px}
+
+/* Cards V3/V4 herdados */
+.v3-department-card strong,
+.v3-filter-chip,
+.v4-sync-chip,
+.order-track-card,
+.order-track-form input,
+.order-track-form button{font-size:14px}
+
+/* Mobile: aumenta leitura sem quebrar layout */
+@media (max-width:600px){
+  body{font-size:15px}
+  .topbar{font-size:11px}
+  .search input{font-size:14px}
+  .hero__copy > p{font-size:16px}
+  .btn{font-size:14px}
+  .product-card{
+    grid-template-columns:145px 1fr;
+    gap:14px;
+  }
+  .product-image{height:170px}
+  .product-photo{
+    inset:8px !important;
+    width:calc(100% - 16px) !important;
+    height:calc(100% - 16px) !important;
+  }
+  .product-name{font-size:16px;min-height:auto}
+  .product-category{font-size:11px}
+  .product-unit,.product-stock{font-size:12px}
+  .price{font-size:22px}
+  .mobile-bottom-nav small{font-size:9px}
+}
+
+/* ==========================================================
+   HOTFIX V5 - LEGIBILIDADE REAL
+   Esta camada fica no fim do CSS para vencer regras antigas
+   que ainda deixavam textos com 8px, 9px, 10px, 11px e 12px.
+   ========================================================== */
+
+:root{
+  --font-body-v5: 17px;
+  --font-small-v5: 14px;
+  --font-label-v5: 14px;
+  --font-control-v5: 16px;
+  --font-nav-v5: 16px;
+  --font-product-v5: 19px;
+}
+
+/* Base de leitura */
+html{font-size:16px}
+body{font-size:var(--font-body-v5) !important;line-height:1.65}
+p,li,dd,dt{font-size:inherit}
+small{font-size:var(--font-small-v5) !important;line-height:1.45}
+
+/* Topo, busca e navegação */
+.topbar,
+.topbar p,
+.topbar a{font-size:14px !important}
+.search input,
+.search button{font-size:16px !important}
+.cart-button__label small{font-size:13px !important}
+.cart-button__label strong{font-size:15px !important}
+.cart-count{font-size:12px !important}
+.nav a{font-size:16px !important}
+
+/* Hero e elementos promocionais */
+.eyebrow{font-size:14px !important}
+.hero__copy > p{font-size:20px !important}
+.btn{font-size:16px !important}
+.hero__stats span{font-size:14px !important}
+.hero-card__badge{font-size:13px !important}
+.hero-card__product small,
+.hero-card__price small{font-size:14px !important}
+.floating-card strong{font-size:15px !important}
+.floating-card small{font-size:13px !important}
+.ticker-track span{font-size:14px !important}
+
+/* Benefícios e categorias */
+.quick-card strong{font-size:16px !important}
+.quick-card span{font-size:14px !important}
+.section-heading > p{font-size:17px !important}
+.category-card strong{font-size:15px !important}
+.countdown{font-size:15px !important}
+.deal-banner__text > span{font-size:13px !important}
+.deal-banner__text p{font-size:17px !important}
+
+/* Catálogo */
+.product-tools span{font-size:14px !important}
+.product-tools select{font-size:15px !important}
+.product-badge{font-size:12px !important}
+.product-card__quick{font-size:12px !important}
+.product-category{font-size:13px !important}
+.product-name{
+  font-size:20px !important;
+  line-height:1.4 !important;
+  min-height:56px;
+}
+.product-unit{font-size:14px !important}
+.product-stock{font-size:13px !important}
+.old-price{font-size:14px !important}
+.price{font-size:29px !important}
+.product-cart-qty{font-size:13px !important}
+
+/* Compra inteligente, benefícios e FAQ */
+.shopping-mode__intro p,
+.benefits__copy > p,
+.newsletter__box p,
+.faq-intro p{font-size:17px !important}
+.shopping-mode__tags span{font-size:14px !important}
+.mode-card strong{font-size:19px !important}
+.mode-card p{font-size:14px !important}
+.step strong{font-size:16px !important}
+.step small{font-size:14px !important}
+.faq-list summary{font-size:16px !important}
+.faq-list details p{font-size:15px !important}
+
+/* Carrinho e checkout */
+.cart-item__name{font-size:15px !important}
+.cart-item__price{font-size:15px !important}
+.qty-value{font-size:14px !important}
+.cart-summary-row,
+.cart-summary-total{font-size:15px !important}
+.cart-note{font-size:13px !important}
+.coupon-box input,
+.coupon-box button{font-size:14px !important}
+.coupon-message{font-size:13px !important}
+.delivery-progress__top{font-size:13px !important}
+.checkout-step-title strong{font-size:16px !important}
+.field > span{font-size:14px !important}
+.field input,
+.field select,
+.field textarea{font-size:16px !important}
+.choice-card strong{font-size:15px !important}
+.choice-card small{font-size:13px !important}
+.checkout-review span{font-size:13px !important}
+.whatsapp-finalize small{font-size:12px !important}
+.whatsapp-finalize strong{font-size:15px !important}
+.phone__message{font-size:13px !important}
+
+/* Rodapé e feedback */
+.footer__grid > div,
+.footer__grid strong{font-size:15px !important}
+.footer__bottom{font-size:13px !important}
+.toast p{font-size:14px !important}
+.search-suggestion strong{font-size:14px !important}
+.search-suggestion small{font-size:13px !important}
+
+/* Componentes herdados das V3/V4 */
+.v3-department-card strong,
+.v3-filter-chip,
+.v4-sync-chip,
+.order-track-card,
+.order-track-form input,
+.order-track-form button{font-size:15px !important}
+
+/* Celular: não reduzir textos a tamanhos microscópicos */
+@media (max-width:600px){
+  body{font-size:16px !important}
+  .topbar,
+  .topbar p{font-size:12px !important}
+  .search input{font-size:16px !important}
+  .hero__copy > p{font-size:17px !important}
+  .btn{font-size:15px !important}
+  .product-name{font-size:18px !important}
+  .product-category{font-size:12px !important}
+  .product-unit,
+  .product-stock{font-size:13px !important}
+  .price{font-size:25px !important}
+  .mobile-bottom-nav small{font-size:11px !important}
+}

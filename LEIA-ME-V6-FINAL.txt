@@ -1,0 +1,192 @@
+SUPERMERCADO SC CENTRAL - V6 FINAL
+==================================
+
+Esta é a versão principal consolidada do projeto. A partir daqui, correções de layout,
+fontes, bugs, banners, campos e pequenas funcionalidades devem ser aplicadas na própria
+V6, sem criar uma sequência V7/V8/V9 apenas para ajustes incrementais.
+
+COMO INICIAR
+------------
+Windows: clique em INICIAR_V6.bat
+Terminal: npm start
+
+Loja:   http://localhost:3000/
+Painel: http://localhost:3000/login.html
+
+Primeiro acesso:
+Usuário: admin
+Senha: TroqueAgora@123
+
+Altere a senha antes de publicar.
+
+O QUE A V6 FINAL ENTREGA
+------------------------
+
+CATÁLOGO
+- Produtos com fotos.
+- Upload de fotos do computador para /public/uploads.
+- URL de imagem opcional.
+- SKU e código de barras.
+- Categorias administráveis.
+- Subcategorias por produto.
+- Descrição.
+- Produto ativo/inativo.
+- Destaques.
+- Badges.
+- Ordem do catálogo.
+- Preço atual e preço anterior.
+- Início/fim de promoção.
+- Estoque.
+- Importação em massa por CSV.
+- Exportação de catálogo em CSV.
+
+VENDA POR UNIDADE E POR PESO
+- Produtos unitários: arroz, leite, bebidas etc.
+- Produtos por peso: carnes, frutas, frios, pão etc.
+- Quantidade decimal.
+- Passo configurável (ex.: 0,1 kg).
+- Quantidade mínima configurável (ex.: 0,5 kg).
+- Campo digitável de quantidade no carrinho para itens por peso.
+- Estoque decimal no servidor.
+- O servidor recalcula preço e quantidade e não confia no valor enviado pelo navegador.
+
+CARRINHO E CHECKOUT
+- Carrinho persistente.
+- Busca, categorias, ofertas, favoritos e produtos recentes.
+- Cupons.
+- Entrega ou retirada.
+- Região/bairro.
+- Taxa de entrega.
+- Pedido mínimo.
+- Frete grátis por valor mínimo configurável.
+- Endereço e referência.
+- Horário preferido.
+- Forma de pagamento.
+- Troco.
+- Observações.
+- Política de substituição:
+  * entrar em contato;
+  * substituir por equivalente;
+  * não substituir.
+- Pedido gravado no servidor antes do WhatsApp.
+- Mensagem organizada para o WhatsApp.
+- Código único do pedido.
+
+PEDIDOS E ESTOQUE
+- Reserva de estoque na criação do pedido.
+- Devolução automática ao cancelar.
+- Revalidação de estoque na transação.
+- Status: novo, confirmado, separando, pronto, saiu para entrega, concluído e cancelado.
+- Histórico de status.
+- Acompanhamento pelo cliente com código + telefone.
+
+CLIENTES
+- Cadastro automático a partir dos pedidos.
+- Nome e telefone.
+- Última região/endereço.
+- Quantidade de pedidos.
+- Valor acumulado em pedidos.
+- Consulta no painel.
+- Migração de pedidos históricos V4/V5 para a base de clientes.
+
+PAINEL ADMINISTRATIVO
+- Dashboard.
+- Produtos.
+- Categorias.
+- Importação/exportação CSV.
+- Banners.
+- Cupons.
+- Regiões de entrega.
+- Pedidos.
+- Clientes.
+- Relatórios.
+- Usuários e permissões.
+- Auditoria.
+- Configurações gerais.
+- Backup JSON.
+
+RELATÓRIOS
+- Pedidos por período.
+- Valor total em pedidos.
+- Ticket médio.
+- Clientes únicos.
+- Produtos com maior valor vendido.
+- Pedidos por região.
+- Evolução diária.
+
+SEGURANÇA E INFRAESTRUTURA
+- Node.js 22.5+.
+- API própria.
+- SQLite com WAL e transações.
+- Sessão administrativa HttpOnly e SameSite Strict.
+- Senhas com scrypt + salt.
+- Papéis: administrador, gerente e atendente.
+- Rate limit para login e pedidos.
+- Validação dos cálculos no servidor.
+- Auditoria de ações.
+- Headers básicos de segurança.
+- Variáveis de ambiente.
+- Backup e migração de banco.
+
+PWA / EXPERIÊNCIA MOBILE
+- manifest.webmanifest.
+- Service Worker.
+- Botão de instalação quando o navegador permitir.
+- Layout responsivo.
+- Navegação inferior mobile.
+- Fontes consolidadas e maiores.
+- CSS da loja consolidado em store-v6.css.
+- CSS do painel consolidado em admin-v6.css.
+- Os CSS antigos permanecem no projeto como histórico, mas não são carregados na página.
+
+INTEGRAÇÕES FUTURAS SEM RECONSTRUIR O SISTEMA
+----------------------------------------------
+A V6 inclui uma camada de webhooks opcional em src/integrations.js.
+Ela pode ser ligada futuramente a ERP, PDV, CRM, automações ou middleware sem alterar
+o núcleo dos pedidos.
+
+Variáveis:
+SC_WEBHOOK_URL=
+SC_WEBHOOK_TOKEN=
+
+Eventos implementados:
+- order.created
+- order.status_changed
+
+Se não houver URL configurada, a integração fica completamente inativa.
+
+IMAGENS DOS PRODUTOS
+--------------------
+As imagens iniciais são fotografias de demonstração. Para uso real, abra o painel,
+edite cada produto e envie a fotografia oficial. O upload passa a ficar no próprio
+projeto em /public/uploads, sem depender da URL externa de demonstração.
+
+MIGRAÇÃO V5 -> V6
+-----------------
+A V6 foi preparada para abrir um banco existente da V5.
+Ela adiciona novas colunas e tabelas sem apagar:
+- produtos;
+- imagens personalizadas;
+- estoque;
+- pedidos;
+- usuários;
+- configurações;
+- auditoria.
+
+Também cria categorias e consolida clientes a partir de pedidos antigos.
+
+REGRA DE EVOLUÇÃO A PARTIR DE AGORA
+-----------------------------------
+Não criar nova versão principal para:
+- corrigir fonte;
+- alterar cor;
+- trocar banner;
+- corrigir responsividade;
+- corrigir bug;
+- acrescentar um campo;
+- melhorar animação;
+- pequenos ajustes no painel.
+
+Essas mudanças passam a ser atualizações da V6 FINAL.
+Uma nova versão principal só deve existir se houver mudança estrutural relevante,
+como multi-loja/SaaS, troca completa de arquitetura ou aplicativo nativo independente.

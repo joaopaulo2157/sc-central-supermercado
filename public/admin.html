@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0758ff">
+  <title>Painel V6 Final | Supermercado SC Central</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin-v6.css">
+</head>
+<body class="admin-v4-loading">
+  <div class="admin-loading" id="adminLoading"><div class="admin-loading__mark">SC</div><strong>Conectando ao servidor V6 FINAL...</strong></div>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <a class="admin-brand" href="index.html"><img src="assets/logo-sc-central.png" alt="SC Central"><span>Painel <b>V6 FINAL</b></span></a>
+      <div class="server-status online" id="serverStatus"><i></i><div><strong>Servidor conectado</strong><small>SQLite + API</small></div></div>
+      <nav class="admin-nav">
+        <button class="active" data-tab="dashboard">▦ <span>Dashboard</span></button>
+        <button data-tab="products" data-min-role="manager">🛒 <span>Produtos</span></button>
+        <button data-tab="categories" data-min-role="manager">▦ <span>Categorias</span></button>
+        <button data-tab="import" data-min-role="manager">⇧ <span>Importar produtos</span></button>
+        <button data-tab="banners" data-min-role="manager">▣ <span>Banners</span></button>
+        <button data-tab="coupons" data-min-role="manager">🏷 <span>Cupons</span></button>
+        <button data-tab="delivery" data-min-role="manager">🚚 <span>Entrega</span></button>
+        <button data-tab="orders">📋 <span>Pedidos</span><b class="nav-badge" id="ordersBadge">0</b></button>
+        <button data-tab="customers">👤 <span>Clientes</span></button>
+        <button data-tab="reports" data-min-role="manager">📈 <span>Relatórios</span></button>
+        <button data-tab="users" data-min-role="admin">👥 <span>Usuários</span></button>
+        <button data-tab="audit">⌁ <span>Auditoria</span></button>
+        <button data-tab="settings" data-min-role="admin">⚙ <span>Configurações</span></button>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <a href="index.html" target="_blank">↗ Abrir loja</a>
+        <small id="sidebarVersion">SC Central V6 FINAL • sincronizado</small>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div>
+          <button class="admin-menu" id="adminMenu">☰</button>
+          <div><small>SC CENTRAL • V6 FINAL</small><h1 id="pageTitle">Dashboard</h1></div>
+        </div>
+        <div class="admin-topbar__actions">
+          <button class="btn-secondary desktop-only" id="refreshBtn">↻ Sincronizar</button>
+          <button class="btn-secondary desktop-only" id="exportBtn" data-min-role="admin">Exportar backup</button>
+          <button class="btn-primary" id="quickAddProduct" data-min-role="manager">+ Novo produto</button>
+          <div class="user-menu-wrap">
+            <button class="user-chip" id="userMenuBtn"><span id="userInitial">A</span><div><strong id="userName">Administrador</strong><small id="userRole">admin</small></div><b>⌄</b></button>
+            <div class="user-menu" id="userMenu">
+              <button id="changePasswordBtn">🔐 Alterar minha senha</button>
+              <a href="index.html" target="_blank">↗ Abrir loja</a>
+              <button class="danger" id="logoutBtn">Sair do painel</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="admin-content">
+        <div class="admin-tab active" id="tab-dashboard">
+          <div class="v4-callout"><div><span>V6 FINAL ATIVA</span><strong>Dados compartilhados em tempo real pelo servidor</strong><p>O painel agora grava em SQLite e a loja consulta a mesma API. Alterações deixam de ficar presas a um único navegador.</p></div><div class="v4-callout__icons"><b>API</b><b>DB</b><b>AUTH</b></div></div>
+          <div class="kpi-grid" id="kpiGrid"></div>
+          <div class="dashboard-grid">
+            <article class="panel"><div class="panel-heading"><div><small>VISÃO GERAL</small><h2>Produtos por departamento</h2></div></div><div class="category-bars" id="categoryBars"></div></article>
+            <article class="panel"><div class="panel-heading"><div><small>ATIVIDADE</small><h2>Pedidos recentes</h2></div><button data-go-tab="orders">Ver todos</button></div><div id="dashboardOrders"></div></article>
+          </div>
+          <div class="dashboard-grid dashboard-grid--v4">
+            <article class="panel"><div class="panel-heading"><div><small>OPERAÇÃO</small><h2>Pedidos por status</h2></div></div><div class="status-overview" id="statusOverview"></div></article>
+            <article class="panel"><div class="panel-heading"><div><small>SERVIDOR</small><h2>Saúde da V6 FINAL</h2></div></div><div class="health-grid" id="healthGrid"></div></article>
+          </div>
+        </div>
+
+        <div class="admin-tab" id="tab-products">
+          <div class="toolbar"><div class="toolbar-search">⌕ <input id="productSearch" placeholder="Buscar produto..."></div><select id="productCategoryFilter"><option value="todos">Todas as categorias</option></select><select id="productStatusFilter"><option value="todos">Todos</option><option value="ativos">Ativos</option><option value="sem-estoque">Sem estoque</option><option value="baixo">Estoque baixo</option></select><button class="btn-primary" id="addProductBtn">+ Cadastrar produto</button></div>
+          <div class="table-card"><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Produto</th><th>SKU</th><th>Categoria</th><th>Venda</th><th>Preço</th><th>Estoque</th><th>Status</th><th>Destaque</th><th></th></tr></thead><tbody id="productsTableBody"></tbody></table></div></div>
+        </div>
+
+        <div class="admin-tab" id="tab-categories">
+          <div class="tab-header"><div><small>CATÁLOGO</small><h2>Categorias e departamentos</h2><p>Organize a navegação da loja sem alterar o código.</p></div><button class="btn-primary" id="v6AddCategoryBtn">+ Nova categoria</button></div>
+          <div class="v6-category-admin-grid" id="v6CategoriesGrid"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-import">
+          <div class="tab-header"><div><small>CATÁLOGO EM MASSA</small><h2>Importar e exportar produtos</h2><p>Use CSV para cadastrar ou atualizar até 1000 produtos por operação. Produtos com o mesmo SKU são atualizados.</p></div></div>
+          <div class="v6-import-grid">
+            <article class="panel"><div class="panel-heading"><div><small>IMPORTAÇÃO</small><h2>Arquivo CSV</h2></div></div><p>Colunas aceitas: sku, nome, categoria, subcategoria, unidade, preco, estoque, modo, medida, passo, minimo, codigoBarras e imagem.</p><input type="file" id="v6CsvFile" accept=".csv,text/csv"><div class="v6-import-actions"><button class="btn-primary" id="v6ImportCsvBtn" type="button">Importar CSV</button><button class="btn-secondary" id="v6DownloadTemplateBtn" type="button">Baixar modelo</button></div><div id="v6ImportResult" class="v6-import-result"></div></article>
+            <article class="panel"><div class="panel-heading"><div><small>EXPORTAÇÃO</small><h2>Catálogo atual</h2></div></div><p>Exporte o catálogo atual em CSV para revisar preços, estoque e cadastros.</p><button class="btn-secondary" id="v6ExportCsvBtn" type="button">Exportar produtos em CSV</button></article>
+          </div>
+        </div>
+
+        <div class="admin-tab" id="tab-banners">
+          <div class="tab-header"><div><small>CARROSSEL DA HOME</small><h2>Banners promocionais</h2><p>As campanhas são gravadas no servidor e aparecem para todos os clientes.</p></div><button class="btn-primary" id="addBannerBtn">+ Novo banner</button></div>
+          <div class="banner-admin-grid" id="bannerAdminGrid"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-coupons">
+          <div class="tab-header"><div><small>PROMOÇÕES</small><h2>Cupons de desconto</h2><p>O servidor valida o cupom e recalcula o pedido sem confiar no preço enviado pelo navegador.</p></div><button class="btn-primary" id="addCouponBtn">+ Novo cupom</button></div>
+          <div class="coupon-admin-grid" id="couponAdminGrid"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-delivery">
+          <div class="tab-header"><div><small>LOGÍSTICA</small><h2>Taxas por bairro/região</h2><p>Configure taxa e pedido mínimo para cada área de entrega.</p></div><button class="btn-primary" id="addNeighborhoodBtn">+ Nova região</button></div>
+          <div class="table-card"><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Região</th><th>Taxa</th><th>Pedido mínimo</th><th>Status</th><th></th></tr></thead><tbody id="deliveryTableBody"></tbody></table></div></div>
+        </div>
+
+        <div class="admin-tab" id="tab-orders">
+          <div class="tab-header"><div><small>ATENDIMENTO</small><h2>Central de pedidos</h2><p>Pedidos enviados pelo site são reservados no estoque e podem ser acompanhados pelo cliente.</p></div></div>
+          <div class="toolbar orders-toolbar"><div class="toolbar-search">⌕ <input id="orderSearch" placeholder="Pedido, cliente ou telefone..."></div><select id="orderStatusFilter"><option value="todos">Todos os status</option><option value="novo">Novos</option><option value="confirmado">Confirmados</option><option value="separando">Em separação</option><option value="pronto">Prontos</option><option value="saiu_entrega">Saiu para entrega</option><option value="concluido">Concluídos</option><option value="cancelado">Cancelados</option></select><button class="btn-secondary" id="reloadOrdersBtn">Atualizar</button></div>
+          <div class="order-list" id="ordersList"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-customers">
+          <div class="tab-header"><div><small>RELACIONAMENTO</small><h2>Clientes</h2><p>Clientes são consolidados automaticamente a partir dos pedidos realizados.</p></div></div>
+          <div class="toolbar"><div class="toolbar-search">⌕ <input id="v6CustomerSearch" placeholder="Nome ou telefone..."></div><button class="btn-secondary" id="v6ReloadCustomers" type="button">Atualizar</button></div>
+          <div class="v6-customers-grid" id="v6CustomersGrid"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-reports">
+          <div class="tab-header"><div><small>GESTÃO</small><h2>Relatórios comerciais</h2><p>Acompanhe pedidos, ticket médio, clientes, produtos e regiões.</p></div><select id="v6ReportPeriod" class="v6-period-select"><option value="7">7 dias</option><option value="30" selected>30 dias</option><option value="90">90 dias</option><option value="365">365 dias</option></select></div>
+          <div class="kpi-grid" id="v6ReportKpis"></div>
+          <div class="v6-report-grid"><article class="panel"><div class="panel-heading"><div><small>RANKING</small><h2>Produtos com maior valor vendido</h2></div></div><div id="v6TopProducts"></div></article><article class="panel"><div class="panel-heading"><div><small>LOGÍSTICA</small><h2>Pedidos por região</h2></div></div><div id="v6RegionsReport"></div></article></div>
+          <article class="panel v6-report-wide"><div class="panel-heading"><div><small>EVOLUÇÃO</small><h2>Pedidos por dia</h2></div></div><div class="v6-daily-chart" id="v6DailyChart"></div></article>
+        </div>
+
+        <div class="admin-tab" id="tab-users">
+          <div class="tab-header"><div><small>ACESSO E PERMISSÕES</small><h2>Usuários do painel</h2><p>Administrador, gerente e atendente possuem níveis de acesso diferentes.</p></div><button class="btn-primary" id="addUserBtn">+ Novo usuário</button></div>
+          <div class="users-grid" id="usersGrid"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-audit">
+          <div class="tab-header"><div><small>RASTREABILIDADE</small><h2>Log de auditoria</h2><p>Registros das principais ações executadas pelos usuários do painel.</p></div><button class="btn-secondary" id="reloadAuditBtn">Atualizar</button></div>
+          <div class="audit-list" id="auditList"></div>
+        </div>
+
+        <div class="admin-tab" id="tab-settings">
+          <div class="tab-header"><div><small>LOJA</small><h2>Configurações gerais</h2><p>As alterações são gravadas no banco e propagadas para a loja.</p></div></div>
+          <form class="settings-form panel" id="settingsForm">
+            <label><span>Nome da loja</span><input name="storeName" required></label>
+            <label><span>WhatsApp (55 + DDD + número)</span><input name="whatsapp" placeholder="5582999999999"></label>
+            <label><span>Meta visual do carrinho</span><input name="cartGoal" type="number" min="0" step="0.01"></label>
+            <label><span>Pedido mínimo padrão</span><input name="minimumOrder" type="number" min="0" step="0.01"></label>
+            <label><span>Frete grátis a partir de</span><input name="freeDeliveryThreshold" type="number" min="0" step="0.01"></label>
+            <label><span>E-mail da loja</span><input name="storeEmail" type="email" placeholder="contato@loja.com"></label>
+            <label><span>Nome do aplicativo (PWA)</span><input name="pwaName" placeholder="SC Central"></label>
+            <label><span>Substituição padrão</span><select name="defaultSubstitution"><option value="contact">Entrar em contato</option><option value="equivalent">Substituir por equivalente</option><option value="none">Não substituir</option></select></label>
+            <label class="full"><span>Mensagem institucional</span><input name="primaryMessage"></label>
+            <label class="full"><span>Horário de funcionamento</span><input name="openingHours"></label>
+            <label class="full"><span>Endereço da loja</span><input name="address"></label>
+            <div class="settings-checks full"><label><input type="checkbox" name="allowDelivery"> Permitir entrega</label><label><input type="checkbox" name="allowPickup"> Permitir retirada</label></div>
+            <div class="settings-actions full"><button type="button" class="btn-secondary" id="copyServerInfoBtn">Copiar informações da V6 FINAL</button><button type="submit" class="btn-primary">Salvar configurações</button></div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="admin-backdrop" id="adminBackdrop"></div>
+  <section class="admin-modal admin-modal--v4" id="adminModal" aria-hidden="true"><div class="admin-modal__header"><div><small id="modalEyebrow">CADASTRO</small><h2 id="modalTitle">Novo item</h2></div><button id="modalClose">×</button></div><div class="admin-modal__body" id="modalBody"></div></section>
+  <div class="admin-toast" id="adminToast"></div>
+  <input type="file" id="productImageFile" accept="image/*" hidden>
+  <script src="admin-v4.js"></script>
+  <script src="admin-v6.js"></script>
+</body>
+</html>

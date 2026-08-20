@@ -1,0 +1,14 @@
+{
+  "name": "Supermercado SC Central",
+  "short_name": "SC Central",
+  "description": "Catálogo online do Supermercado SC Central com pedidos pelo WhatsApp.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0758ff",
+  "lang": "pt-BR",
+  "icons": [
+    {"src":"/assets/logo-sc-central.png","sizes":"any","type":"image/png","purpose":"any"}
+  ]
+}

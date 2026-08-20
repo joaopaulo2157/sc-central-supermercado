@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b5cff" />
+  <meta name="description" content="Supermercado SC Central - ofertas, variedade e compra rápida pelo WhatsApp." />
+  <title>Supermercado SC Central | V5 - Catálogo com fotos, pedidos e WhatsApp</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="v3.css" />
+  <link rel="stylesheet" href="v4.css" />
+  <link rel="stylesheet" href="v5.css" />
+</head>
+<body>
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-mark">SC</div>
+    <div class="loader-line"><span></span></div>
+  </div>
+
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+
+  <div class="topbar">
+    <div class="container topbar__content">
+      <p>🚚 Entrega rápida • 🛒 Compre online • 💬 Finalize pelo WhatsApp</p>
+      <div class="topbar__actions">
+        <a href="#ofertas">Ofertas do dia</a>
+        <a href="#contato">Atendimento</a>
+        <span class="v4-sync-chip" id="v4SyncChip"><i></i><b>Conectando...</b></span>
+        <a href="login.html" class="admin-access">Painel V5</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="header" id="inicio">
+    <div class="container header__inner">
+      <a class="brand" href="#inicio" aria-label="Supermercado SC Central">
+        <img src="assets/logo-sc-central.png" alt="Supermercado SC Central" />
+      </a>
+
+      <form class="search" id="searchForm" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"/></svg>
+        <input id="searchInput" type="search" placeholder="O que você está procurando?" autocomplete="off" />
+        <button type="submit">Buscar</button>
+        <div class="search-suggestions" id="searchSuggestions"></div>
+      </form>
+
+      <div class="header__actions">
+        <button class="icon-button" id="favoritesBtn" aria-label="Favoritos">
+          <span>♡</span>
+        </button>
+        <button class="cart-button" id="openCartBtn" aria-label="Abrir carrinho">
+          <span class="cart-button__icon">🛒</span>
+          <span class="cart-button__label">
+            <small>Meu carrinho</small>
+            <strong id="cartHeaderTotal">R$ 0,00</strong>
+          </span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+      </div>
+    </div>
+
+    <nav class="nav" id="mainNav">
+      <div class="container nav__inner">
+        <a href="#inicio" class="active">Início</a>
+        <a href="#ofertas">Ofertas</a>
+        <a href="#categorias">Categorias</a>
+        <a href="#departamentos">Departamentos</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#beneficios">Vantagens</a>
+        <a href="#contato">Contato</a>
+        <a href="#acompanhar">Acompanhar pedido</a>
+        <a href="login.html" class="nav-admin">⚙ Painel</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero__grid-overlay"></div>
+      <div class="container hero__content">
+        <div class="hero__copy reveal">
+          <span class="eyebrow">ECONOMIA QUE CABE NO SEU DIA</span>
+          <h1>
+            Seu mercado completo,
+            <span>agora também no celular.</span>
+          </h1>
+          <p>Monte seu carrinho com tranquilidade e envie o pedido completo para nosso atendimento no WhatsApp.</p>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary magnetic" href="#produtos">Começar a comprar</a>
+            <a class="btn btn--ghost" href="#ofertas">Ver ofertas</a>
+          </div>
+
+          <div class="hero__stats">
+            <div>
+              <strong data-counter="1500">0</strong>
+              <span>produtos</span>
+            </div>
+            <div>
+              <strong data-counter="35">0</strong>
+              <span>categorias</span>
+            </div>
+            <div>
+              <strong data-counter="7">0</strong>
+              <span>dias por semana</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__visual reveal reveal--delay">
+          <div class="hero-card hero-card--main">
+            <div class="hero-card__badge">OFERTA DA SEMANA</div>
+            <div class="hero-card__content">
+              <div class="hero-card__product">
+                <span class="hero-card__emoji">🛒</span>
+                <div>
+                  <small>Faça sua compra completa</small>
+                  <strong>sem filas</strong>
+                </div>
+              </div>
+              <div class="hero-card__price">
+                <small>Finalize direto pelo</small>
+                <strong>WhatsApp</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-card floating-card--1">
+            <span>🥬</span>
+            <div><strong>Hortifruti</strong><small>fresco todos os dias</small></div>
+          </div>
+          <div class="floating-card floating-card--2">
+            <span>🥩</span>
+            <div><strong>Açougue</strong><small>qualidade selecionada</small></div>
+          </div>
+          <div class="floating-card floating-card--3">
+            <span>🥐</span>
+            <div><strong>Padaria</strong><small>sempre quentinho</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__ticker">
+        <div class="ticker-track">
+          <span>OFERTAS IMPERDÍVEIS</span><i>•</i>
+          <span>QUALIDADE E ECONOMIA</span><i>•</i>
+          <span>COMPRE PELO CELULAR</span><i>•</i>
+          <span>FINALIZE NO WHATSAPP</span><i>•</i>
+          <span>OFERTAS IMPERDÍVEIS</span><i>•</i>
+          <span>QUALIDADE E ECONOMIA</span><i>•</i>
+          <span>COMPRE PELO CELULAR</span><i>•</i>
+          <span>FINALIZE NO WHATSAPP</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="v3-banner-section" aria-label="Campanhas do supermercado">
+      <div class="container">
+        <div class="v3-banner-shell reveal">
+          <div class="v3-banner-track" id="v3BannerTrack"></div>
+          <button class="v3-banner-arrow v3-banner-arrow--prev" id="v3BannerPrev" aria-label="Banner anterior">‹</button>
+          <button class="v3-banner-arrow v3-banner-arrow--next" id="v3BannerNext" aria-label="Próximo banner">›</button>
+          <div class="v3-banner-dots" id="v3BannerDots"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="v3-trust-strip">
+      <div class="container v3-trust-strip__inner">
+        <span><b>V5</b> fotos reais no catálogo</span>
+        <span>•</span>
+        <span>estoque visual</span>
+        <span>•</span>
+        <span>taxa por bairro</span>
+        <span>•</span>
+        <span>pedidos sincronizados</span>
+        <span>•</span>
+        <span>painel administrativo</span>
+      </div>
+    </section>
+
+    <section class="promo-showcase" aria-label="Destaques da semana">
+      <div class="container promo-showcase__grid">
+        <article class="promo-mini promo-mini--blue reveal">
+          <div>
+            <span>OFERTA RELÂMPAGO</span>
+            <strong>Descontos especiais</strong>
+            <small>em itens selecionados</small>
+          </div>
+          <div class="promo-mini__icon">⚡</div>
+        </article>
+        <article class="promo-mini promo-mini--light reveal">
+          <div>
+            <span>COMPRA INTELIGENTE</span>
+            <strong>Monte sua lista</strong>
+            <small>sem pressa e sem filas</small>
+          </div>
+          <div class="promo-mini__icon">📝</div>
+        </article>
+        <article class="promo-mini promo-mini--dark reveal">
+          <div>
+            <span>ATENDIMENTO HUMANO</span>
+            <strong>Finalize no WhatsApp</strong>
+            <small>com confirmação da loja</small>
+          </div>
+          <div class="promo-mini__icon">💬</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="quick-benefits">
+      <div class="container quick-benefits__grid">
+        <article class="quick-card reveal">
+          <div class="quick-card__icon">🚚</div>
+          <div><strong>Entrega rápida</strong><span>Consulte disponibilidade</span></div>
+        </article>
+        <article class="quick-card reveal">
+          <div class="quick-card__icon">💬</div>
+          <div><strong>Pedido pelo WhatsApp</strong><span>Atendimento humano</span></div>
+        </article>
+        <article class="quick-card reveal">
+          <div class="quick-card__icon">💳</div>
+          <div><strong>Pagamento fácil</strong><span>Combine no atendimento</span></div>
+        </article>
+        <article class="quick-card reveal">
+          <div class="quick-card__icon">🛡️</div>
+          <div><strong>Compra segura</strong><span>Seu pedido confirmado</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section--light" id="categorias">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <span class="eyebrow eyebrow--blue">ENCONTRE MAIS RÁPIDO</span>
+            <h2>Compre por categoria</h2>
+          </div>
+          <p>Selecione uma categoria e encontre os produtos que você precisa.</p>
+        </div>
+
+        <div class="categories-grid" id="categoriesGrid">
+          <button class="category-card active" data-category="todos"><span>✨</span><strong>Todos</strong></button>
+          <button class="category-card" data-category="ofertas"><span>🏷️</span><strong>Ofertas</strong></button>
+          <button class="category-card" data-category="hortifruti"><span>🥬</span><strong>Hortifruti</strong></button>
+          <button class="category-card" data-category="acougue"><span>🥩</span><strong>Açougue</strong></button>
+          <button class="category-card" data-category="padaria"><span>🥐</span><strong>Padaria</strong></button>
+          <button class="category-card" data-category="bebidas"><span>🥤</span><strong>Bebidas</strong></button>
+          <button class="category-card" data-category="limpeza"><span>🧽</span><strong>Limpeza</strong></button>
+          <button class="category-card" data-category="mercearia"><span>🥫</span><strong>Mercearia</strong></button>
+          <button class="category-card" data-category="frios"><span>🧀</span><strong>Frios</strong></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section departments-section" id="departamentos">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <span class="eyebrow eyebrow--blue">DEPARTAMENTOS V3</span>
+            <h2>Um supermercado inteiro na sua tela.</h2>
+          </div>
+          <p>Atalhos visuais para levar o cliente diretamente aos setores mais procurados.</p>
+        </div>
+
+        <div class="departments-grid">
+          <button class="department-card department-card--large" data-department="hortifruti">
+            <div class="department-card__bg">🥬</div>
+            <span>FRESCOR TODOS OS DIAS</span><strong>Hortifruti</strong><small>Frutas, legumes e verduras</small>
+          </button>
+          <button class="department-card" data-department="acougue"><div class="department-card__bg">🥩</div><span>SELECIONADOS</span><strong>Açougue</strong><small>Carnes e cortes</small></button>
+          <button class="department-card" data-department="padaria"><div class="department-card__bg">🥐</div><span>SAINDO DO FORNO</span><strong>Padaria</strong><small>Pães e bolos</small></button>
+          <button class="department-card" data-department="bebidas"><div class="department-card__bg">🥤</div><span>GELADAS E VARIADAS</span><strong>Bebidas</strong><small>Água, sucos e refrigerantes</small></button>
+          <button class="department-card" data-department="limpeza"><div class="department-card__bg">🧽</div><span>CASA COMPLETA</span><strong>Limpeza</strong><small>Produtos para o dia a dia</small></button>
+          <button class="department-card" data-department="frios"><div class="department-card__bg">🧀</div><span>FATIADOS E RESFRIADOS</span><strong>Frios</strong><small>Queijos, presuntos e laticínios</small></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shopping-mode">
+      <div class="container shopping-mode__grid">
+        <div class="shopping-mode__intro reveal">
+          <span class="eyebrow eyebrow--blue">V2 • COMPRA MAIS INTELIGENTE</span>
+          <h2>Escolha como você quer receber sua compra.</h2>
+          <p>Na finalização, o cliente informa seus dados, escolhe entrega ou retirada, forma de pagamento, horário preferido e observações. Tudo segue organizado para o WhatsApp.</p>
+          <div class="shopping-mode__tags">
+            <span>🚚 Entrega</span>
+            <span>🏪 Retirada</span>
+            <span>💳 Pagamento</span>
+            <span>🕐 Horário</span>
+          </div>
+        </div>
+        <div class="shopping-mode__cards reveal reveal--delay">
+          <article class="mode-card">
+            <span class="mode-card__number">01</span>
+            <strong>Monte o carrinho</strong>
+            <p>Pesquise, filtre e ajuste as quantidades.</p>
+          </article>
+          <article class="mode-card">
+            <span class="mode-card__number">02</span>
+            <strong>Preencha os dados</strong>
+            <p>Nome, endereço, pagamento e observações.</p>
+          </article>
+          <article class="mode-card">
+            <span class="mode-card__number">03</span>
+            <strong>Envie para a loja</strong>
+            <p>O pedido chega pronto no WhatsApp.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section deals" id="ofertas">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <span class="eyebrow">PREÇOS ESPECIAIS</span>
+            <h2>Ofertas que valem a pena</h2>
+          </div>
+          <div class="countdown">
+            <span>Terminam em</span>
+            <strong id="countdown">08:00:00</strong>
+          </div>
+        </div>
+
+        <div class="deal-banner reveal">
+          <div class="deal-banner__text">
+            <span>CLUBE DE OFERTAS</span>
+            <h3>Economize mais na sua compra da semana.</h3>
+            <p>Adicione os produtos ao carrinho e envie tudo de uma vez para nosso WhatsApp.</p>
+            <a href="#produtos" class="btn btn--light">Aproveitar agora</a>
+          </div>
+          <div class="deal-banner__art" aria-hidden="true">
+            <div class="deal-shape deal-shape--1"></div>
+            <div class="deal-shape deal-shape--2"></div>
+            <div class="deal-basket">🛒</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light" id="produtos">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <span class="eyebrow eyebrow--blue">ESCOLHA, ADICIONE E PRONTO</span>
+            <h2>Produtos em destaque</h2>
+          </div>
+          <div class="product-tools product-tools--v3">
+            <span id="productCountLabel">32 produtos</span>
+            <label class="mini-filter"><input type="checkbox" id="featuredOnly" /> <span>Destaques</span></label>
+            <label class="mini-filter"><input type="checkbox" id="stockOnly" checked /> <span>Em estoque</span></label>
+            <select id="sortSelect" aria-label="Ordenar produtos">
+              <option value="relevancia">Mais relevantes</option>
+              <option value="menor-preco">Menor preço</option>
+              <option value="maior-preco">Maior preço</option>
+              <option value="nome">Nome A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <span>🔎</span>
+          <h3>Nenhum produto encontrado</h3>
+          <p>Tente buscar por outro nome ou escolha uma categoria diferente.</p>
+          <button class="btn btn--primary" id="clearFiltersBtn">Limpar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section recent-section" id="recentes" hidden>
+      <div class="container">
+        <div class="section-heading reveal in-view">
+          <div>
+            <span class="eyebrow eyebrow--blue">CONTINUE DE ONDE PAROU</span>
+            <h2>Vistos recentemente</h2>
+          </div>
+          <button class="text-action" id="clearRecentBtn">Limpar histórico</button>
+        </div>
+        <div class="recent-track" id="recentTrack"></div>
+      </div>
+    </section>
+
+    <section class="section benefits" id="beneficios">
+      <div class="container benefits__layout">
+        <div class="benefits__copy reveal">
+          <span class="eyebrow">PENSADO PARA FACILITAR</span>
+          <h2>Uma experiência simples do carrinho ao atendimento.</h2>
+          <p>O cliente escolhe os itens, confere o resumo e envia o pedido organizado para o WhatsApp da loja. O atendente recebe tudo pronto para confirmar estoque, entrega e pagamento.</p>
+
+          <div class="steps">
+            <div class="step"><span>01</span><div><strong>Escolha os produtos</strong><small>Use busca, categorias e ofertas.</small></div></div>
+            <div class="step"><span>02</span><div><strong>Monte seu carrinho</strong><small>Ajuste quantidades quando quiser.</small></div></div>
+            <div class="step"><span>03</span><div><strong>Envie pelo WhatsApp</strong><small>Seu pedido vai completo e organizado.</small></div></div>
+          </div>
+        </div>
+
+        <div class="phone-mockup reveal reveal--delay">
+          <div class="phone">
+            <div class="phone__notch"></div>
+            <div class="phone__screen">
+              <div class="phone__header">
+                <img src="assets/logo-sc-central.png" alt="" />
+              </div>
+              <div class="phone__message phone__message--store">Olá! 👋 Seu carrinho está pronto.</div>
+              <div class="phone__message phone__message--user">
+                🛒 *Pedido SC Central*<br><br>
+                2x Arroz 5kg<br>
+                1x Feijão 1kg<br>
+                3x Leite 1L<br><br>
+                *Total estimado: R$ 78,42*
+              </div>
+              <div class="phone__message phone__message--store">Perfeito! Vamos confirmar disponibilidade e entrega. ✅</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section v4-tracking-section" id="acompanhar">
+      <div class="container v4-tracking-layout">
+        <div class="v4-tracking-copy reveal">
+          <span class="eyebrow eyebrow--blue">V5 • ACOMPANHAMENTO DE PEDIDO</span>
+          <h2>Veja em que etapa está sua compra.</h2>
+          <p>Depois que o pedido é enviado, ele recebe um código único. Informe o código e o telefone usado na compra para acompanhar a atualização feita pela equipe do supermercado.</p>
+          <div class="v4-live-features">
+            <span>✓ Pedido salvo no servidor</span>
+            <span>✓ Estoque sincronizado</span>
+            <span>✓ Status atualizado pelo painel</span>
+          </div>
+        </div>
+        <div class="v4-tracking-card reveal reveal--delay">
+          <form id="orderTrackForm">
+            <label><span>Código do pedido</span><input id="trackOrderId" placeholder="Ex.: SC-20260819-1234" required></label>
+            <label><span>Telefone da compra</span><input id="trackPhone" inputmode="tel" placeholder="(00) 00000-0000" required></label>
+            <button class="btn btn--primary" type="submit">Acompanhar pedido</button>
+          </form>
+          <div class="v4-tracking-result" id="orderTrackResult" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light faq-section" id="duvidas">
+      <div class="container faq-layout">
+        <div class="faq-intro reveal">
+          <span class="eyebrow eyebrow--blue">DÚVIDAS RÁPIDAS</span>
+          <h2>Comprar pelo site é simples.</h2>
+          <p>A V2 deixa o processo mais claro para o cliente e mais organizado para o atendimento da loja.</p>
+        </div>
+
+        <div class="faq-list reveal">
+          <details open>
+            <summary>O pagamento é feito no site?</summary>
+            <p>Não. O site monta o pedido e envia tudo para o WhatsApp. A loja confirma estoque, valor final, pagamento e entrega.</p>
+          </details>
+          <details>
+            <summary>O carrinho fica salvo?</summary>
+            <p>Sim. O carrinho é salvo no navegador e continua disponível mesmo que o cliente atualize a página.</p>
+          </details>
+          <details>
+            <summary>Posso escolher retirada no supermercado?</summary>
+            <p>Sim. Na finalização, o cliente poderá escolher entre entrega e retirada na loja.</p>
+          </details>
+          <details>
+            <summary>Os preços podem ser atualizados depois?</summary>
+            <p>Sim. A estrutura foi preparada para receber painel administrativo e catálogo integrado em versões futuras.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section newsletter" id="contato">
+      <div class="container newsletter__box reveal">
+        <div>
+          <span class="eyebrow">NÃO PERCA AS NOVIDADES</span>
+          <h2>Receba nossas ofertas e fique por dentro.</h2>
+          <p>Você também pode falar direto com nosso atendimento para tirar dúvidas.</p>
+        </div>
+        <div class="newsletter__actions">
+          <a class="btn btn--light" id="whatsappContactBtn" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
+          <a class="btn btn--outline-light" href="#inicio">Voltar ao topo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <img src="assets/logo-sc-central.png" alt="Supermercado SC Central" />
+        <p>Qualidade, economia e praticidade todos os dias.</p>
+      </div>
+      <div>
+        <strong>Atalhos</strong>
+        <a href="#ofertas">Ofertas</a>
+        <a href="#categorias">Categorias</a>
+        <a href="#departamentos">Departamentos</a>
+        <a href="#produtos">Produtos</a>
+      </div>
+      <div>
+        <strong>Atendimento</strong>
+        <a href="#" id="footerWhatsapp">WhatsApp</a>
+        <span>Segunda a sábado</span>
+        <span>Horário comercial</span>
+      </div>
+      <div>
+        <strong>Informações</strong>
+        <span>Preços sujeitos a confirmação.</span>
+        <span>Imagens ilustrativas.</span>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <span>© <span id="currentYear"></span> Supermercado SC Central.</span>
+      <span>Todos os direitos reservados. • <a href="admin.html">Painel administrativo V3</a></span>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer__header">
+      <div>
+        <span class="eyebrow eyebrow--blue">SUA COMPRA</span>
+        <h2>Meu carrinho</h2>
+      </div>
+      <button class="close-cart" id="closeCartBtn" aria-label="Fechar carrinho">×</button>
+    </div>
+
+    <div class="cart-drawer__body" id="cartItems"></div>
+
+    <div class="cart-empty" id="cartEmpty">
+      <div>🛒</div>
+      <h3>Seu carrinho está vazio</h3>
+      <p>Adicione produtos e eles aparecerão aqui.</p>
+      <button class="btn btn--primary" id="continueShoppingBtn">Ver produtos</button>
+    </div>
+
+    <div class="cart-drawer__footer" id="cartFooter">
+      <div class="delivery-progress">
+        <div class="delivery-progress__top">
+          <span id="deliveryProgressText">Adicione produtos para avançar</span>
+          <strong id="deliveryProgressValue">0%</strong>
+        </div>
+        <div class="delivery-progress__bar"><span id="deliveryProgressBar"></span></div>
+      </div>
+
+      <div class="coupon-box">
+        <input id="couponInput" type="text" placeholder="Cupom promocional" maxlength="20" />
+        <button id="applyCouponBtn" type="button">Aplicar</button>
+      </div>
+      <small class="coupon-message" id="couponMessage"></small>
+
+      <div class="cart-summary-row"><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div>
+      <div class="cart-summary-row cart-discount-row" id="discountRow" hidden><span>Desconto</span><strong id="cartDiscount">- R$ 0,00</strong></div>
+      <div class="cart-summary-row"><span>Entrega</span><strong>A combinar</strong></div>
+      <div class="cart-summary-total"><span>Total estimado</span><strong id="cartTotal">R$ 0,00</strong></div>
+      <button class="whatsapp-checkout" id="checkoutBtn">
+        <span>💬</span>
+        <div><small>Revisar dados e enviar pelo</small><strong>WhatsApp</strong></div>
+      </button>
+      <p class="cart-note">O atendimento confirmará estoque, valores, forma de pagamento e entrega.</p>
+    </div>
+  </aside>
+
+  <aside class="favorites-drawer" id="favoritesDrawer" aria-hidden="true">
+    <div class="favorites-drawer__header">
+      <div><span class="eyebrow eyebrow--blue">SELECIONADOS</span><h2>Meus favoritos</h2></div>
+      <button class="close-cart" id="closeFavoritesBtn" aria-label="Fechar favoritos">×</button>
+    </div>
+    <div class="favorites-drawer__body" id="favoritesList"></div>
+  </aside>
+
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+  <section class="quick-modal" id="quickModal" aria-hidden="true">
+    <button class="modal-close" id="closeQuickModal" aria-label="Fechar">×</button>
+    <div class="quick-modal__content" id="quickModalContent"></div>
+  </section>
+
+  <section class="checkout-modal" id="checkoutModal" aria-hidden="true">
+    <div class="checkout-modal__header">
+      <div>
+        <span class="eyebrow eyebrow--blue">FINALIZAÇÃO V2</span>
+        <h2>Dados para o atendimento</h2>
+      </div>
+      <button class="modal-close modal-close--inline" id="closeCheckoutModal" aria-label="Fechar">×</button>
+    </div>
+
+    <form class="checkout-form" id="checkoutForm">
+      <div class="checkout-form__scroll">
+        <div class="checkout-step-title"><span>1</span><strong>Seus dados</strong></div>
+        <div class="form-grid">
+          <label class="field field--full">
+            <span>Nome do cliente *</span>
+            <input id="customerName" name="customerName" required placeholder="Digite seu nome" />
+          </label>
+          <label class="field">
+            <span>Telefone *</span>
+            <input id="customerPhone" name="customerPhone" required inputmode="tel" placeholder="(00) 00000-0000" />
+          </label>
+          <label class="field">
+            <span>Bairro / região</span>
+            <select id="customerNeighborhood" name="customerNeighborhood">
+              <option value="">Selecione</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="checkout-step-title"><span>2</span><strong>Como receber</strong></div>
+        <div class="delivery-options">
+          <label class="choice-card">
+            <input type="radio" name="deliveryMethod" value="Entrega" checked />
+            <span>🚚</span>
+            <div><strong>Entrega</strong><small>Receber no endereço informado</small></div>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="deliveryMethod" value="Retirada na loja" />
+            <span>🏪</span>
+            <div><strong>Retirada</strong><small>Buscar no supermercado</small></div>
+          </label>
+        </div>
+
+        <div class="form-grid" id="deliveryAddressFields">
+          <label class="field field--full">
+            <span>Endereço</span>
+            <input id="customerAddress" name="customerAddress" placeholder="Rua, número e complemento" />
+          </label>
+          <label class="field">
+            <span>Referência</span>
+            <input id="customerReference" name="customerReference" placeholder="Próximo a..." />
+          </label>
+          <label class="field">
+            <span>Horário preferido</span>
+            <select id="deliveryTime" name="deliveryTime">
+              <option value="O quanto antes">O quanto antes</option>
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noite">Noite</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="checkout-step-title"><span>3</span><strong>Pagamento</strong></div>
+        <div class="form-grid">
+          <label class="field">
+            <span>Forma de pagamento</span>
+            <select id="paymentMethod" name="paymentMethod">
+              <option value="Pix">Pix</option>
+              <option value="Cartão">Cartão</option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="A combinar">A combinar</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Troco para</span>
+            <input id="changeFor" name="changeFor" inputmode="decimal" placeholder="Ex.: R$ 100,00" />
+          </label>
+          <label class="field field--full">
+            <span>Observações</span>
+            <textarea id="customerNotes" name="customerNotes" rows="3" placeholder="Ex.: escolher frutas mais maduras, não substituir produto..."></textarea>
+          </label>
+        </div>
+
+        <div class="checkout-review checkout-review--v3">
+          <div><span>Total de itens</span><strong id="checkoutItemsCount">0</strong></div>
+          <div><span>Produtos</span><strong id="checkoutProductsTotal">R$ 0,00</strong></div>
+          <div><span>Taxa estimada</span><strong id="checkoutDeliveryFee">R$ 0,00</strong></div>
+          <div><span>Total estimado</span><strong id="checkoutTotal">R$ 0,00</strong></div>
+        </div>
+        <div class="delivery-alert" id="deliveryAlert"></div>
+      </div>
+
+      <div class="checkout-modal__footer">
+        <button type="button" class="btn btn--secondary" id="backToCartBtn">Voltar ao carrinho</button>
+        <button type="submit" class="whatsapp-finalize">
+          <span>💬</span>
+          <div><small>Enviar pedido completo</small><strong>Continuar no WhatsApp</strong></div>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <nav class="mobile-bottom-nav" aria-label="Navegação rápida">
+    <a href="#inicio"><span>⌂</span><small>Início</small></a>
+    <a href="#categorias"><span>▦</span><small>Categorias</small></a>
+    <button id="mobileCartBtn"><span>🛒</span><small>Carrinho</small><b id="mobileCartCount">0</b></button>
+    <a href="#ofertas"><span>🏷</span><small>Ofertas</small></a>
+    <button id="mobileWhatsappBtn"><span>💬</span><small>WhatsApp</small></button>
+  </nav>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <button class="floating-whatsapp" id="floatingWhatsapp" aria-label="Falar pelo WhatsApp">
+    <span>💬</span>
+    <small>WhatsApp</small>
+  </button>
+
+  <script src="v4-boot.js"></script>
+</body>
+</html>

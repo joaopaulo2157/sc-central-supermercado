@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0758ff">
+  <title>Login V5 | Supermercado SC Central</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-visual">
+      <a href="index.html" class="login-logo"><img src="assets/logo-sc-central.png" alt="SC Central"></a>
+      <div class="login-visual__copy">
+        <span>SC CENTRAL • V5</span>
+        <h1>Painel sincronizado com banco de dados.</h1>
+        <p>Produtos, estoque, pedidos, usuários, promoções e configurações agora são compartilhados entre os dispositivos conectados ao servidor.</p>
+        <div class="login-pills"><b>SQLite</b><b>API</b><b>Usuários</b><b>Permissões</b><b>Pedidos</b></div>
+      </div>
+      <div class="login-orb login-orb--1"></div><div class="login-orb login-orb--2"></div>
+    </section>
+
+    <section class="login-panel">
+      <form class="login-card" id="loginForm">
+        <div class="login-card__mark">SC</div>
+        <span class="eyebrow">ACESSO ADMINISTRATIVO</span>
+        <h2>Entrar no Painel V5</h2>
+        <p>Use um usuário cadastrado pelo administrador.</p>
+
+        <label><span>Usuário</span><input id="username" name="username" autocomplete="username" required placeholder="Seu usuário"></label>
+        <label><span>Senha</span><div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Sua senha"><button type="button" id="togglePassword">◉</button></div></label>
+        <button class="login-submit" id="loginSubmit" type="submit"><span>Entrar no painel</span><b>→</b></button>
+        <div class="login-error" id="loginError" hidden></div>
+        <a class="back-store" href="index.html">← Voltar para a loja</a>
+      </form>
+    </section>
+  </main>
+  <script src="login.js"></script>
+</body>
+</html>

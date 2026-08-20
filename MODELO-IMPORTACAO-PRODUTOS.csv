@@ -1,0 +1,3 @@
+sku;nome;categoria;subcategoria;unidade;preco;estoque;modo;medida;passo;minimo;codigoBarras;imagem
+SC1000;Banana Prata;hortifruti;Frutas;Preço por kg;5.99;30;weight;kg;0.1;0.5;;
+SC1001;Arroz Tipo 1;mercearia;Arroz e feijão;Pacote 5kg;28.90;50;unit;un;1;1;7890000000000;

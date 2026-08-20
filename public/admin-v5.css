@@ -1,0 +1,281 @@
+/* ==========================================================
+   PAINEL ADMINISTRATIVO SC CENTRAL - V5
+   Tipografia ampliada e maior área útil para leitura.
+   ========================================================== */
+
+body{font-size:15px}
+.admin-shell{grid-template-columns:285px 1fr}
+.admin-sidebar{padding:24px 16px}
+.admin-brand img{width:132px;max-height:54px}
+.admin-brand span{font-size:13px}
+.admin-nav{gap:7px}
+.admin-nav button{
+  padding:14px 15px;
+  font-size:14px;
+  line-height:1.35;
+}
+.admin-sidebar__footer a{font-size:13px}
+.admin-sidebar__footer small{font-size:11px}
+
+.admin-topbar{min-height:92px;padding:16px 30px}
+.admin-topbar small,.tab-header small,.panel-heading small{
+  font-size:11px;
+}
+.admin-topbar h1{font-size:28px}
+.btn-primary,.btn-secondary,.btn-danger-outline{
+  min-height:44px;
+  padding:0 16px;
+  font-size:13px;
+}
+.admin-content{padding:30px}
+
+.kpi-card{min-height:150px;padding:22px}
+.kpi-card small{font-size:12px}
+.kpi-card strong{font-size:31px}
+.kpi-card b{font-size:11px}
+.panel-heading h2,.tab-header h2{font-size:22px}
+.panel-heading button{font-size:12px}
+.tab-header p{font-size:13px;line-height:1.55}
+.category-bar__row{grid-template-columns:120px 1fr 38px;font-size:12px}
+.mini-order strong{font-size:13px}
+.mini-order small{font-size:11px}
+.mini-order b{font-size:13px}
+.admin-note strong{font-size:14px}
+.admin-note p{font-size:13px}
+.toolbar-search input,.toolbar select{font-size:13px}
+.toolbar-search{min-height:46px}
+.data-table{min-width:880px}
+.data-table th{font-size:11px;padding:15px 17px}
+.data-table td{font-size:12px;padding:14px 17px}
+.product-thumb{width:58px;height:58px;font-size:28px}
+.product-cell strong{font-size:13px}
+.product-cell small{font-size:11px}
+.status-pill{font-size:10px;padding:6px 9px}
+.icon-btn{width:36px;height:36px}
+
+.banner-admin-card small{font-size:10px}
+.banner-admin-card strong{font-size:21px}
+.banner-admin-card p{font-size:12px}
+.card-actions button{font-size:11px}
+.coupon-card span{font-size:12px}
+.order-card__top strong{font-size:14px}
+.order-card__top span{font-size:10px}
+.order-card p{font-size:12px}
+.order-card__value small{font-size:10px}
+.settings-form label>span{font-size:11px}
+.settings-form input,.settings-form select,.settings-form textarea{font-size:13px}
+
+/* V4/V5 componentes */
+.server-status{padding:12px}
+.server-status strong{font-size:11px !important}
+.server-status small{font-size:10px !important}
+.nav-badge{font-size:10px !important;min-width:23px;height:23px}
+.user-chip{min-height:50px}
+.user-chip strong{font-size:12px !important}
+.user-chip small{font-size:10px !important}
+.user-chip>b{font-size:12px !important}
+.user-menu button,.user-menu a{font-size:12px !important;padding:12px}
+.v4-callout span{font-size:11px !important}
+.v4-callout strong{font-size:21px !important}
+.v4-callout p{font-size:13px !important}
+.v4-callout__icons b{font-size:12px !important}
+.status-card span{font-size:11px !important}
+.status-card strong{font-size:20px !important}
+.health-item strong{font-size:12px !important}
+.health-item small{font-size:10px !important}
+.health-item b{font-size:11px !important}
+.order-card-v4__main strong{font-size:14px !important}
+.order-card-v4__main span{font-size:12px !important}
+.order-card-v4__main small{font-size:11px !important}
+.order-card-v4__meta span{font-size:11px !important}
+.order-status-pill{font-size:10px !important}
+.order-card-v4__actions button{font-size:11px !important}
+.user-card-v4__head strong{font-size:13px !important}
+.user-card-v4__head small{font-size:11px !important}
+.role-pill{font-size:10px !important}
+.user-card-v4__actions button{font-size:11px !important}
+.audit-row strong{font-size:12px !important}
+.audit-row span,.audit-row small{font-size:11px !important}
+.audit-action{font-size:10px !important}
+.modal-form-v4 label>span{font-size:11px !important}
+.modal-form-v4 input,.modal-form-v4 select,.modal-form-v4 textarea{
+  font-size:13px !important;
+  padding:12px 13px !important;
+}
+.image-preview-v4{font-size:12px !important}
+.image-tools-v4 button{font-size:11px !important}
+.order-detail-head small{font-size:11px !important}
+.order-detail-block span{font-size:10px !important}
+.order-detail-block strong{font-size:12px !important}
+.order-item-v4{font-size:11px !important}
+.status-editor-v4 label span{font-size:10px !important}
+.status-editor-v4 select,.status-editor-v4 input,.status-editor-v4 button{font-size:11px !important}
+.order-event-v4 strong{font-size:11px !important}
+.order-event-v4 small{font-size:10px !important}
+.order-event-v4 p{font-size:11px !important}
+
+/* Foto no painel um pouco maior */
+.product-cell .product-thumb img{object-fit:contain;background:#fff;padding:3px}
+
+@media(max-width:900px){
+  .admin-shell{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  body{font-size:14px}
+  .admin-topbar{min-height:82px;padding:12px 14px}
+  .admin-topbar h1{font-size:23px}
+  .admin-content{padding:16px}
+  .admin-nav button{font-size:14px}
+  .data-table th{font-size:10px}
+  .data-table td{font-size:12px}
+}
+
+/* ==========================================================
+   HOTFIX V5 - PAINEL ADMINISTRATIVO COM FONTE REALMENTE MAIOR
+   Corrige os tamanhos muito pequenos herdados das camadas V3/V4.
+   ========================================================== */
+
+:root{
+  --admin-body-v5:16px;
+  --admin-small-v5:14px;
+  --admin-label-v5:14px;
+  --admin-control-v5:15px;
+  --admin-table-v5:14px;
+}
+
+html{font-size:16px}
+body{font-size:var(--admin-body-v5) !important;line-height:1.55}
+small{font-size:var(--admin-small-v5) !important;line-height:1.4}
+
+/* Navegação */
+.admin-shell{grid-template-columns:300px 1fr}
+.admin-brand span{font-size:14px !important}
+.admin-nav button{font-size:16px !important;padding:15px 16px}
+.admin-sidebar__footer a{font-size:14px !important}
+.admin-sidebar__footer small{font-size:13px !important}
+
+/* Topbar */
+.admin-topbar small,
+.tab-header small,
+.panel-heading small{font-size:13px !important}
+.admin-topbar h1{font-size:30px !important}
+.btn-primary,
+.btn-secondary,
+.btn-danger-outline{font-size:14px !important}
+
+/* Dashboard */
+.kpi-card small{font-size:14px !important}
+.kpi-card strong{font-size:33px !important}
+.kpi-card b{font-size:13px !important}
+.panel-heading h2,
+.tab-header h2{font-size:24px !important}
+.panel-heading button{font-size:14px !important}
+.tab-header p{font-size:15px !important}
+.category-bar__row{font-size:14px !important}
+.mini-order strong{font-size:15px !important}
+.mini-order small{font-size:13px !important}
+.mini-order b{font-size:15px !important}
+.admin-note strong{font-size:16px !important}
+.admin-note p{font-size:15px !important}
+
+/* Busca, filtros e tabelas */
+.toolbar-search input,
+.toolbar select{font-size:15px !important}
+.data-table th{
+  font-size:13px !important;
+  padding:16px 17px !important;
+}
+.data-table td{
+  font-size:14px !important;
+  padding:15px 17px !important;
+}
+.product-cell strong{font-size:15px !important}
+.product-cell small{font-size:13px !important}
+.status-pill{font-size:12px !important}
+.card-actions button{font-size:13px !important}
+
+/* Banners, cupons, pedidos e configurações */
+.banner-admin-card small{font-size:13px !important}
+.banner-admin-card strong{font-size:22px !important}
+.banner-admin-card p{font-size:14px !important}
+.coupon-card span{font-size:14px !important}
+.order-card__top strong{font-size:16px !important}
+.order-card__top span{font-size:13px !important}
+.order-card p{font-size:14px !important}
+.order-card__value small{font-size:13px !important}
+.settings-form label>span{font-size:14px !important}
+.settings-form input,
+.settings-form select,
+.settings-form textarea{font-size:15px !important}
+
+/* Servidor e usuário */
+.server-status strong{font-size:14px !important}
+.server-status small{font-size:13px !important}
+.nav-badge{font-size:12px !important}
+.user-chip strong{font-size:14px !important}
+.user-chip small{font-size:13px !important}
+.user-chip>b{font-size:14px !important}
+.user-menu button,
+.user-menu a{font-size:14px !important}
+
+/* Callout e saúde */
+.v4-callout span{font-size:13px !important}
+.v4-callout strong{font-size:23px !important}
+.v4-callout p{font-size:15px !important}
+.v4-callout__icons b{font-size:14px !important}
+.status-card span{font-size:13px !important}
+.status-card strong{font-size:22px !important}
+.health-item strong{font-size:14px !important}
+.health-item small{font-size:13px !important}
+.health-item b{font-size:14px !important}
+
+/* Pedidos V4/V5 */
+.order-card-v4__main strong{font-size:16px !important}
+.order-card-v4__main span{font-size:14px !important}
+.order-card-v4__main small{font-size:13px !important}
+.order-card-v4__meta span{font-size:13px !important}
+.order-status-pill{font-size:12px !important}
+.order-card-v4__actions button{font-size:13px !important}
+
+/* Usuários e auditoria */
+.user-card-v4__head strong{font-size:15px !important}
+.user-card-v4__head small{font-size:13px !important}
+.role-pill{font-size:12px !important}
+.user-card-v4__actions button{font-size:13px !important}
+.audit-row strong{font-size:14px !important}
+.audit-row span,
+.audit-row small{font-size:13px !important}
+.audit-action{font-size:12px !important}
+
+/* Modais e formulários */
+.modal-form-v4 label>span{font-size:14px !important}
+.modal-form-v4 input,
+.modal-form-v4 select,
+.modal-form-v4 textarea{
+  font-size:15px !important;
+  padding:13px 14px !important;
+}
+.image-preview-v4{font-size:14px !important}
+.image-tools-v4 button{font-size:13px !important}
+
+/* Detalhes do pedido */
+.order-detail-head small{font-size:13px !important}
+.order-detail-block span{font-size:13px !important}
+.order-detail-block strong{font-size:14px !important}
+.order-item-v4{font-size:14px !important}
+.status-editor-v4 label span{font-size:13px !important}
+.status-editor-v4 select,
+.status-editor-v4 input,
+.status-editor-v4 button{font-size:14px !important}
+.order-event-v4 strong{font-size:14px !important}
+.order-event-v4 small{font-size:13px !important}
+.order-event-v4 p{font-size:14px !important}
+
+/* Mobile */
+@media(max-width:760px){
+  body{font-size:15px !important}
+  .admin-topbar h1{font-size:25px !important}
+  .admin-nav button{font-size:15px !important}
+  .data-table th{font-size:12px !important}
+  .data-table td{font-size:13px !important}
+}

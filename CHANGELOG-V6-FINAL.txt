@@ -1,0 +1,23 @@
+SC CENTRAL - CHANGELOG V6 FINAL
+
+- Consolidação de estilos da loja e painel.
+- Correção definitiva de tipografia pequena.
+- Categorias administráveis.
+- Subcategorias.
+- SKU e código de barras.
+- Venda por unidade e peso.
+- Quantidades decimais e passos configuráveis.
+- Estoque decimal.
+- Preferência de substituição.
+- Upload local de imagens.
+- Datas de promoção.
+- Importação e exportação CSV.
+- Clientes consolidados automaticamente.
+- Relatórios comerciais.
+- Frete grátis por limite configurável.
+- PWA e Service Worker.
+- SEO básico + dados estruturados.
+- Webhooks opcionais para integrações futuras.
+- Migração automática da V5.
+- Snapshot da V5 preservado em legacy-v5.
+- API atualizada para 6.0.0.
