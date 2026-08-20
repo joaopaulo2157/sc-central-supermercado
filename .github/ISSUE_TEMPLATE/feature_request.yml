@@ -1,0 +1,26 @@
+name: Sugerir melhoria
+description: Proponha uma evolução para a V6 FINAL.
+title: "[MELHORIA] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: Qual problema esta melhoria resolve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposta
+    attributes:
+      label: Proposta
+      description: Descreva como você imagina a solução.
+    validations:
+      required: true
+
+  - type: textarea
+    id: impacto
+    attributes:
+      label: Impacto esperado
+      description: Loja, painel, estoque, pedidos, performance, segurança etc.

@@ -7,9 +7,27 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "check": "node --check server.js && node --check src/db.js && node --check src/security.js && node --check src/integrations.js && node --check public/v4-boot.js && node --check public/v4-store.js && node --check public/v6.js && node --check public/admin-v4.js && node --check public/admin-v6.js && node --check public/login.js && node --check public/v3.js && node --check public/sw.js"
+    "check": "node --check server.js && node --check src/db.js && node --check src/security.js && node --check src/integrations.js && node --check public/v4-boot.js && node --check public/v4-store.js && node --check public/v6.js && node --check public/admin-v4.js && node --check public/admin-v6.js && node --check public/login.js && node --check public/v3.js && node --check public/sw.js",
+    "ci": "npm run check"
   },
   "engines": {
     "node": ">=22.5.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaopaulo2157/sc-central-supermercado.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joaopaulo2157/sc-central-supermercado/issues"
+  },
+  "homepage": "https://github.com/joaopaulo2157/sc-central-supermercado",
+  "license": "UNLICENSED",
+  "keywords": [
+    "supermercado",
+    "ecommerce",
+    "whatsapp",
+    "nodejs",
+    "sqlite",
+    "pwa"
+  ]
 }

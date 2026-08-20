@@ -1,0 +1,44 @@
+name: Relatar bug
+description: Informe um problema reproduzível na V6 FINAL.
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: resumo
+    attributes:
+      label: O que aconteceu?
+      description: Descreva o problema de forma objetiva.
+    validations:
+      required: true
+
+  - type: textarea
+    id: passos
+    attributes:
+      label: Como reproduzir
+      description: Liste os passos para reproduzir o problema.
+      placeholder: |
+        1. Abra...
+        2. Clique...
+        3. O erro aparece...
+    validations:
+      required: true
+
+  - type: input
+    id: navegador
+    attributes:
+      label: Navegador / ambiente
+      placeholder: Chrome 151 / Windows 11 / Node 22
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs ou mensagem de erro
+      render: shell
+
+  - type: checkboxes
+    id: seguranca
+    attributes:
+      label: Confirmação
+      options:
+        - label: Este relato não contém senha, token, chave, cookie ou outro segredo.
+          required: true

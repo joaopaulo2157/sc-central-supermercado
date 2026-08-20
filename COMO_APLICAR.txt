@@ -1,0 +1,21 @@
+APLICAR MELHORIAS PROFISSIONAIS AO GITHUB
+
+1. Extraia o conteúdo deste ZIP DENTRO da pasta local do projeto que já possui a pasta .git.
+2. Aceite substituir README.md, package.json, .gitignore, .gitattributes, .env.example e ATUALIZAR_GITHUB.bat.
+3. Execute APLICAR_MELHORIAS_GITHUB.bat.
+4. Aguarde a mensagem ATUALIZACAO CONCLUIDA COM SUCESSO.
+
+O pacote adiciona:
+- README profissional;
+- GitHub Actions com sintaxe + smoke test;
+- CODEOWNERS;
+- templates de bug, melhoria e pull request;
+- SECURITY.md;
+- CONTRIBUTING.md;
+- Dockerfile;
+- compose.yaml;
+- .dockerignore;
+- .editorconfig;
+- documentação de deploy, operação e organização.
+
+Não há force push.

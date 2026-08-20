@@ -2,16 +2,23 @@ name: Validar SC Central V6
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
 
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validar:
+    name: Sintaxe e smoke test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
@@ -21,5 +28,35 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Exibir versão
+        run: node --version
+
       - name: Validar JavaScript
         run: npm run check
+
+      - name: Iniciar servidor
+        run: |
+          NODE_NO_WARNINGS=1 node server.js > server.log 2>&1 &
+          echo $! > server.pid
+          for i in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:3000/api/health > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat server.log
+          exit 1
+
+      - name: Testar API de saúde
+        run: curl --fail --show-error http://127.0.0.1:3000/api/health
+
+      - name: Encerrar servidor
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi
+
+      - name: Mostrar log em caso de falha
+        if: failure()
+        run: cat server.log || true

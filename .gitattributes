@@ -1,7 +1,6 @@
-# Normalização de finais de linha do SC Central
+# Normalização de finais de linha
 * text=auto
 
-# Código e configuração: LF
 *.js   text eol=lf
 *.mjs  text eol=lf
 *.cjs  text eol=lf
@@ -15,6 +14,5 @@
 *.yaml text eol=lf
 *.sh   text eol=lf
 
-# Scripts do Windows: CRLF
 *.bat  text eol=crlf
 *.cmd  text eol=crlf

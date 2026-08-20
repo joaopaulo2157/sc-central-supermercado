@@ -1,0 +1,24 @@
+services:
+  sc-central:
+    build:
+      context: .
+    container_name: sc-central-v6
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      SC_HTTPS: ${SC_HTTPS:-0}
+      SC_SESSION_HOURS: ${SC_SESSION_HOURS:-8}
+      SC_ADMIN_USER: ${SC_ADMIN_USER:-admin}
+      SC_ADMIN_PASSWORD: ${SC_ADMIN_PASSWORD}
+      SC_WEBHOOK_URL: ${SC_WEBHOOK_URL:-}
+      SC_WEBHOOK_TOKEN: ${SC_WEBHOOK_TOKEN:-}
+    volumes:
+      - sc-central-data:/app/data
+      - sc-central-uploads:/app/public/uploads
+
+volumes:
+  sc-central-data:
+  sc-central-uploads:
