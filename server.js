@@ -16,10 +16,10 @@ const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public');
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '0.0.0.0';
-const IS_SECURE = process.env.SC_HTTPS === '1';
+const IS_SECURE = process.env.SC_HTTPS === '1' || Boolean(process.env.RAILWAY_ENVIRONMENT);
 const SESSION_HOURS = Number(process.env.SC_SESSION_HOURS || 8);
 const JSON_LIMIT = 3 * 1024 * 1024;
-const STORAGE_DIR = process.env.SC_STORAGE_DIR || null;
+const STORAGE_DIR = process.env.SC_STORAGE_DIR || process.env.RAILWAY_VOLUME_MOUNT_PATH || null;
 const UPLOAD_DIR = process.env.SC_UPLOAD_DIR
   || (STORAGE_DIR ? path.join(STORAGE_DIR, 'uploads') : path.join(PUBLIC, 'uploads'));
 fs.mkdirSync(UPLOAD_DIR, { recursive:true });

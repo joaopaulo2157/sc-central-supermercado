@@ -1,95 +1,108 @@
-# Deploy no Railway — SC Central V6 FINAL
+# Railway — configuração final do SC Central V6 FINAL
 
-A V6 foi preparada para usar um único diretório persistente:
+O repositório já contém `railway.json` e `Dockerfile`.
 
-```text
-/app/storage
-```
+O Railway deverá usar automaticamente:
 
-Dentro dele ficam:
+- Dockerfile como builder;
+- `/api/health` como health check;
+- timeout de health check de 300 segundos;
+- restart `ON_FAILURE`;
+- até 10 tentativas de restart.
 
-```text
-/app/storage/sc-central.sqlite
-/app/storage/uploads/
-```
-
-Isso permite usar um único Railway Volume para banco e imagens.
-
-## 1. Criar o projeto
+## 1. Criar projeto
 
 No Railway:
 
-1. New Project
-2. Deploy from GitHub repo
-3. Selecione `joaopaulo2157/sc-central-supermercado`
-4. Selecione o serviço criado
+1. `New Project`
+2. `Deploy from GitHub repo`
+3. Escolha `joaopaulo2157/sc-central-supermercado`
+4. Aguarde o primeiro build
 
-O `Dockerfile` do repositório já está preparado.
+## 2. Variáveis obrigatórias
 
-## 2. Variáveis
-
-Cadastre no serviço:
+No serviço > `Variables`, cadastre:
 
 ```text
-HOST=0.0.0.0
-SC_HTTPS=1
-SC_SESSION_HOURS=8
 SC_ADMIN_USER=admin
-SC_ADMIN_PASSWORD=COLOQUE_UMA_SENHA_FORTE
-SC_STORAGE_DIR=/app/storage
+SC_ADMIN_PASSWORD=UMA_SENHA_FORTE
 ```
 
-Não é necessário fixar `PORT` se o Railway já fornecer a variável. Se precisar, use:
+Opcionalmente:
 
 ```text
-PORT=3000
+SC_SESSION_HOURS=8
 ```
 
-Configure o WhatsApp posteriormente pelo painel/variáveis previstas na aplicação; não invente um número.
+Você não precisa cadastrar `PORT`: Railway fornece essa variável.
+
+Você também não precisa cadastrar `SC_HTTPS`: a aplicação reconhece automaticamente o ambiente Railway e marca o cookie de sessão como seguro.
 
 ## 3. Volume persistente
 
-Adicione **um volume** ao serviço com Mount Path:
+Adicione um Railway Volume ao mesmo serviço.
+
+Use Mount Path:
 
 ```text
 /app/storage
 ```
 
-O banco SQLite e as imagens enviadas pelo painel passarão a sobreviver a redeploys/restarts.
-
-## 4. Domínio
-
-Em Settings > Networking, gere um domínio público do Railway.
-
-## 5. Health check
-
-Use:
+O Railway injeta automaticamente:
 
 ```text
-/api/health
+RAILWAY_VOLUME_MOUNT_PATH=/app/storage
 ```
 
-O retorno esperado é JSON com:
+A V6 utiliza essa variável automaticamente.
 
-```json
-{"ok":true}
+O conteúdo persistente ficará assim:
+
+```text
+/app/storage/
+├── sc-central.sqlite
+└── uploads/
 ```
 
-## 6. Primeiro acesso
+Não configure outro volume para esta versão.
 
-Após o deploy:
+## 4. Domínio público
 
-- acesse `/` para a loja;
-- acesse `/login.html` para o painel;
-- troque/configure credenciais antes de uso real;
-- configure WhatsApp, endereço, horários, taxas, regiões e imagens oficiais.
+No serviço:
 
-## 7. Auto-deploy
+`Settings` → `Networking` → `Generate Domain`
 
-Mantenha o serviço ligado ao repositório GitHub. Novos pushes na branch configurada podem gerar novos deploys automaticamente.
+Depois disso a loja ficará disponível no domínio fornecido pelo Railway.
 
-## 8. Importante
+Painel:
 
-Não use GitHub Pages para a aplicação completa: a V6 depende de Node.js, sessões, SQLite e uploads.
+```text
+https://SEU-DOMINIO/login.html
+```
 
-Faça backups do volume persistentemente, principalmente antes de mudanças estruturais.
+Health check:
+
+```text
+https://SEU-DOMINIO/api/health
+```
+
+## 5. GitHub Auto Deploy
+
+Mantenha a branch de produção como `main`.
+
+Quando houver push em `main`, o serviço conectado ao GitHub poderá disparar um novo deploy automaticamente.
+
+## 6. Segurança antes de uso real
+
+Antes de divulgar:
+
+- use uma senha administrativa forte;
+- configure o número oficial do WhatsApp;
+- confira regiões/taxas/pedido mínimo;
+- troque imagens demonstrativas pelas oficiais;
+- teste pedido completo;
+- mantenha backup do volume.
+
+## 7. Importante
+
+GitHub Pages não é usado para executar a aplicação completa. O site público deve apontar para o domínio do Railway (ou para um domínio próprio conectado ao Railway).

@@ -1,0 +1,12 @@
+SC CENTRAL V6 FINAL — RAILWAY CONFIGURADO
+
+1. Extraia este ZIP dentro da pasta local do repositório.
+2. Aceite substituir arquivos.
+3. Execute CONFIGURAR_RAILWAY.bat.
+4. Depois abra o Railway e conecte o repositório GitHub.
+5. Cadastre SC_ADMIN_PASSWORD.
+6. Adicione um Volume com Mount Path /app/storage.
+7. Gere o domínio em Settings > Networking.
+
+O arquivo railway.json já configura Dockerfile, health check e restart.
+A aplicação detecta automaticamente o mount path do Railway Volume.

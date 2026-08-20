@@ -50,6 +50,7 @@ sc-central-supermercado/
 ├── legacy-v3/          # histórico preservado
 ├── legacy-v5/          # histórico preservado
 ├── Dockerfile
+├── railway.json        # Config as Code para Railway
 ├── compose.yaml
 ├── server.js
 └── package.json
