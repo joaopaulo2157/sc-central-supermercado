@@ -1,0 +1,29 @@
+INTEGRAÇÃO GITHUB - SC CENTRAL V6 FINAL
+
+REPOSITÓRIO:
+https://github.com/joaopaulo2157/sc-central-supermercado
+
+SE APARECER O ERRO:
+! [rejected] main -> main (fetch first)
+
+Execute:
+CORRIGIR_E_PUBLICAR_GITHUB.bat
+
+O script vai:
+1. baixar o histórico remoto com git fetch;
+2. ligar a pasta local ao commit atual do GitHub sem apagar seus arquivos;
+3. normalizar LF/CRLF;
+4. criar apenas o commit necessário;
+5. enviar com push normal, sem force push.
+
+Os avisos "LF will be replaced by CRLF" não são falhas. Eles apenas indicam conversão
+de final de linha no Windows. O arquivo .gitattributes incluído neste pacote padroniza isso.
+
+ATUALIZAÇÕES FUTURAS:
+Depois da primeira correção/publicação, use ATUALIZAR_GITHUB.bat.
+
+IMPORTANTE:
+- .env não deve ser enviado ao GitHub;
+- banco SQLite local não deve ser enviado;
+- uploads locais não devem ser enviados;
+- não use git push --force para corrigir este caso.
