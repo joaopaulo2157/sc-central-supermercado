@@ -1,0 +1,13 @@
+SC CENTRAL V6 FINAL - PATCH RAILWAY
+
+1. Extraia este ZIP DENTRO da pasta local do repositório já publicado.
+2. Aceite substituir os arquivos existentes.
+3. Execute PUBLICAR_RAILWAY_READY.bat.
+4. Depois configure o Railway conforme docs/RAILWAY.md.
+
+Este patch mantém a V6 FINAL e adiciona:
+- SC_STORAGE_DIR;
+- banco e uploads em um único volume persistente;
+- Dockerfile preparado para /app/storage;
+- documentação Railway;
+- publicação segura sem force push.

@@ -19,7 +19,9 @@ const HOST = process.env.HOST || '0.0.0.0';
 const IS_SECURE = process.env.SC_HTTPS === '1';
 const SESSION_HOURS = Number(process.env.SC_SESSION_HOURS || 8);
 const JSON_LIMIT = 3 * 1024 * 1024;
-const UPLOAD_DIR = path.join(PUBLIC, 'uploads');
+const STORAGE_DIR = process.env.SC_STORAGE_DIR || null;
+const UPLOAD_DIR = process.env.SC_UPLOAD_DIR
+  || (STORAGE_DIR ? path.join(STORAGE_DIR, 'uploads') : path.join(PUBLIC, 'uploads'));
 fs.mkdirSync(UPLOAD_DIR, { recursive:true });
 
 const ROLE_LEVEL = { attendant: 1, manager: 2, admin: 3 };
@@ -450,9 +452,21 @@ function mimeFor(filePath) {
 function serveStatic(req, res, pathname) {
   let relative = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
   try { relative = decodeURIComponent(relative); } catch { return sendText(res, 400, 'Caminho inválido.'); }
-  const filePath = path.resolve(PUBLIC, relative);
-  if (!filePath.startsWith(PUBLIC + path.sep) && filePath !== path.join(PUBLIC, 'index.html')) return sendText(res, 403, 'Acesso negado.');
+
+  let baseDir = PUBLIC;
+  let requestedRelative = relative;
+
+  if (pathname.startsWith('/uploads/')) {
+    baseDir = UPLOAD_DIR;
+    requestedRelative = pathname.replace(/^\/uploads\/+/, '');
+    try { requestedRelative = decodeURIComponent(requestedRelative); } catch { return sendText(res, 400, 'Caminho inválido.'); }
+  }
+
+  const filePath = path.resolve(baseDir, requestedRelative);
+  const baseResolved = path.resolve(baseDir);
+  if (!filePath.startsWith(baseResolved + path.sep) && filePath !== baseResolved) return sendText(res, 403, 'Acesso negado.');
   if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) return sendText(res, 404, 'Arquivo não encontrado.');
+
   const stat = fs.statSync(filePath);
   res.writeHead(200, {
     'Content-Type': mimeFor(filePath),

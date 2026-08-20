@@ -4,7 +4,8 @@ const { DatabaseSync } = require('node:sqlite');
 const { hashPassword } = require('./security');
 
 const ROOT = path.resolve(__dirname, '..');
-const DB_PATH = process.env.SC_DB_PATH || path.join(ROOT, 'data', 'sc-central.sqlite');
+const STORAGE_DIR = process.env.SC_STORAGE_DIR || path.join(ROOT, 'data');
+const DB_PATH = process.env.SC_DB_PATH || path.join(STORAGE_DIR, 'sc-central.sqlite');
 const SEED_PATH = path.join(__dirname, 'seed-data.json');
 
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });

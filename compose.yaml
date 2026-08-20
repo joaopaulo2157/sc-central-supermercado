@@ -13,12 +13,11 @@ services:
       SC_SESSION_HOURS: ${SC_SESSION_HOURS:-8}
       SC_ADMIN_USER: ${SC_ADMIN_USER:-admin}
       SC_ADMIN_PASSWORD: ${SC_ADMIN_PASSWORD}
+      SC_STORAGE_DIR: /app/storage
       SC_WEBHOOK_URL: ${SC_WEBHOOK_URL:-}
       SC_WEBHOOK_TOKEN: ${SC_WEBHOOK_TOKEN:-}
     volumes:
-      - sc-central-data:/app/data
-      - sc-central-uploads:/app/public/uploads
+      - sc-central-storage:/app/storage
 
 volumes:
-  sc-central-data:
-  sc-central-uploads:
+  sc-central-storage:

@@ -24,6 +24,8 @@ SC_SESSION_HOURS=8
 SC_ADMIN_USER
 SC_ADMIN_PASSWORD
 SC_DB_PATH
+SC_STORAGE_DIR
+SC_UPLOAD_DIR
 SC_WEBHOOK_URL
 SC_WEBHOOK_TOKEN
 ```
@@ -91,3 +93,20 @@ Isso permite que o cookie de sessão use a flag `Secure`.
 ## GitHub Actions
 
 O workflow `.github/workflows/validate.yml` valida a aplicação antes de deploy. Um deploy automático pode ser conectado futuramente ao provedor escolhido sem criar uma nova versão principal.
+
+
+## Railway
+
+Para o Railway, a V6 recomenda:
+
+```text
+SC_STORAGE_DIR=/app/storage
+```
+
+e um único volume montado em:
+
+```text
+/app/storage
+```
+
+Consulte `docs/RAILWAY.md`.
