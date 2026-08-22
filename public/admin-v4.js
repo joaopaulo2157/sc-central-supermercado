@@ -119,7 +119,7 @@
       console.error('[SC Central Admin] Falha ao inicializar autenticação/permissões:', error);
       if (e.loading) {
         const text=e.loading.querySelector('strong');
-        if(text) text.textContent='Não foi possível iniciar o painel. Atualize a página.';
+        if(text) text.textContent = `Falha ao iniciar o painel: ${error?.message || 'erro inesperado'}`;
         setTimeout(()=>e.loading?.classList.add('hidden'),5000);
       }
       return false;
