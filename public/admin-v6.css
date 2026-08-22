@@ -341,3 +341,17 @@ small{font-size:13px!important}
 
 /* V6 FINAL - piso de legibilidade do painel */
 .status-pill,.order-status-pill,.role-pill,.audit-action,.nav-badge{font-size:13px!important}.v6-category-card__copy span,.v6-customer-card small,.v6-customer-value small{font-size:13px!important}.v6-day strong{font-size:13px!important}.v6-day span{font-size:12px!important}.admin-main small,.admin-sidebar small{font-size:13px!important}
+
+/* V6 FINAL - diagnóstico de persistência */
+.health-item.storage-alert {
+  border-color: rgba(220, 38, 38, .35);
+  background: rgba(254, 226, 226, .9);
+  box-shadow: inset 0 0 0 1px rgba(220, 38, 38, .08);
+}
+.health-item.storage-alert strong,
+.health-item.storage-alert b {
+  color: #b91c1c;
+}
+.health-item.storage-alert small {
+  color: #7f1d1d;
+}

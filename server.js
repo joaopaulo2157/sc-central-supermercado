@@ -4,7 +4,9 @@ const path = require('node:path');
 const { URL } = require('node:url');
 const {
   db, DB_PATH, now, getMeta, bumpVersion,
-  getSettingsObject, setSettingsObject, audit
+  getSettingsObject, setSettingsObject, audit,
+  storageStatus, checkpointDatabase, STORAGE_DIR: DB_STORAGE_DIR,
+  STORAGE_PERSISTENT, IS_RAILWAY, RAILWAY_VOLUME_MOUNT_PATH
 } = require('./src/db');
 const {
   hashPassword, verifyPassword, randomToken, hashToken,
@@ -19,9 +21,10 @@ const HOST = process.env.HOST || '0.0.0.0';
 const IS_SECURE = process.env.SC_HTTPS === '1' || Boolean(process.env.RAILWAY_ENVIRONMENT);
 const SESSION_HOURS = Number(process.env.SC_SESSION_HOURS || 8);
 const JSON_LIMIT = 3 * 1024 * 1024;
-const STORAGE_DIR = process.env.SC_STORAGE_DIR || process.env.RAILWAY_VOLUME_MOUNT_PATH || null;
-const UPLOAD_DIR = process.env.SC_UPLOAD_DIR
-  || (STORAGE_DIR ? path.join(STORAGE_DIR, 'uploads') : path.join(PUBLIC, 'uploads'));
+const STORAGE_DIR = DB_STORAGE_DIR;
+const UPLOAD_DIR = RAILWAY_VOLUME_MOUNT_PATH
+  ? path.join(STORAGE_DIR, 'uploads')
+  : (process.env.SC_UPLOAD_DIR || (STORAGE_DIR ? path.join(STORAGE_DIR, 'uploads') : path.join(PUBLIC, 'uploads')));
 fs.mkdirSync(UPLOAD_DIR, { recursive:true });
 
 const ROLE_LEVEL = { attendant: 1, manager: 2, admin: 3 };
@@ -478,12 +481,51 @@ function serveStatic(req, res, pathname) {
 
 function boolInt(value) { return value ? 1 : 0; }
 
+function persistenceProblem() {
+  if (!IS_RAILWAY || STORAGE_PERSISTENT) return null;
+  return {
+    ok:false,
+    error:'Armazenamento persistente do Railway não está conectado. Adicione um Volume ao MESMO serviço/ambiente e monte em /app/storage antes de salvar cadastros, configurações ou pedidos.',
+    code:'PERSISTENT_STORAGE_REQUIRED',
+    storage:{
+      platform:'railway',
+      persistent:false,
+      mode:'railway-ephemeral',
+      expectedMountPath:'/app/storage'
+    }
+  };
+}
+
+function requirePersistentStorage(res) {
+  const problem = persistenceProblem();
+  if (!problem) return true;
+  sendJson(res, 503, problem);
+  return false;
+}
+
 async function handleApi(req, res, url) {
   const pathname = url.pathname;
   const method = req.method || 'GET';
 
   if (method === 'GET' && pathname === '/api/health') {
-    return sendJson(res, 200, { ok:true, version:'6.0.0', database:path.basename(DB_PATH), changeVersion:Number(getMeta('change_version','1')), integrationWebhook:integrations.enabled(), time:now() });
+    const storage = storageStatus();
+    return sendJson(res, 200, {
+      ok:true,
+      version:'6.0.0',
+      database:path.basename(DB_PATH),
+      changeVersion:Number(getMeta('change_version','1')),
+      integrationWebhook:integrations.enabled(),
+      storage:{
+        platform:storage.platform,
+        mode:storage.mode,
+        persistent:storage.persistent,
+        writable:storage.writable,
+        volumeMounted:Boolean(RAILWAY_VOLUME_MOUNT_PATH),
+        databaseBytes:storage.databaseBytes,
+        walBytes:storage.walBytes
+      },
+      time:now()
+    });
   }
 
   if (method === 'GET' && pathname === '/api/bootstrap') {
@@ -530,6 +572,7 @@ async function handleApi(req, res, url) {
 
   if (method === 'POST' && pathname === '/api/auth/change-password') {
     const user = requireAuth(req,res,'attendant'); if (!user) return;
+    if (!requirePersistentStorage(res)) return;
     const body = await readJson(req);
     const row = db.prepare('SELECT * FROM users WHERE id=?').get(user.id);
     if (!verifyPassword(String(body.currentPassword || ''), row.password_salt, row.password_hash)) {
@@ -545,6 +588,7 @@ async function handleApi(req, res, url) {
   }
 
   if (method === 'POST' && pathname === '/api/orders') {
+    if (!requirePersistentStorage(res)) return;
     if (!rateLimit(req, 'order', 30, 10 * 60 * 1000)) return sendJson(res, 429, { ok:false, error:'Muitos pedidos em pouco tempo. Aguarde alguns minutos.' });
     const settings = getSettingsObject();
     const storeWhatsapp = safeText(settings.whatsapp || '', 30).replace(/\D/g,'');
@@ -576,8 +620,22 @@ async function handleApi(req, res, url) {
     const user = requireAuth(req,res,minRole); if (!user) return;
 
     if (method === 'GET' && pathname === '/api/admin/bootstrap') {
-      return sendJson(res, 200, { ok:true, ...getBootstrap({admin:true}), user });
+      return sendJson(res, 200, { ok:true, ...getBootstrap({admin:true}), user, storage:storageStatus() });
     }
+
+    if (method === 'GET' && pathname === '/api/admin/storage') {
+      if (user.role !== 'admin') return sendJson(res,403,{ok:false,error:'Apenas administrador pode consultar o armazenamento.'});
+      return sendJson(res,200,{ok:true,storage:storageStatus()});
+    }
+
+    if (method === 'POST' && pathname === '/api/admin/storage/checkpoint') {
+      if (user.role !== 'admin') return sendJson(res,403,{ok:false,error:'Apenas administrador pode executar checkpoint.'});
+      if (!requirePersistentStorage(res)) return;
+      const checkpoint=checkpointDatabase('TRUNCATE');
+      return sendJson(res,200,{ok:true,checkpoint,storage:storageStatus()});
+    }
+
+    if (method !== 'GET' && !requirePersistentStorage(res)) return;
 
     if (method === 'GET' && pathname === '/api/admin/dashboard') {
       const products = db.prepare('SELECT COUNT(*) c, SUM(CASE WHEN active=1 AND stock>0 THEN 1 ELSE 0 END) in_stock, SUM(CASE WHEN active=1 AND stock BETWEEN 1 AND 8 THEN 1 ELSE 0 END) low_stock FROM products').get();

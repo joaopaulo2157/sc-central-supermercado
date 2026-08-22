@@ -4,16 +4,26 @@ const { DatabaseSync } = require('node:sqlite');
 const { hashPassword } = require('./security');
 
 const ROOT = path.resolve(__dirname, '..');
-const STORAGE_DIR = process.env.SC_STORAGE_DIR || process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(ROOT, 'data');
-const DB_PATH = process.env.SC_DB_PATH || path.join(STORAGE_DIR, 'sc-central.sqlite');
+const IS_RAILWAY = Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID || process.env.RAILWAY_SERVICE_ID);
+const RAILWAY_VOLUME_MOUNT_PATH = String(process.env.RAILWAY_VOLUME_MOUNT_PATH || '').trim();
+// No Railway, o mount real do Volume sempre tem prioridade sobre qualquer caminho manual.
+const STORAGE_DIR = RAILWAY_VOLUME_MOUNT_PATH || process.env.SC_STORAGE_DIR || path.join(ROOT, 'data');
+const DB_PATH = RAILWAY_VOLUME_MOUNT_PATH
+  ? path.join(STORAGE_DIR, 'sc-central.sqlite')
+  : (process.env.SC_DB_PATH || path.join(STORAGE_DIR, 'sc-central.sqlite'));
+const STORAGE_MODE = IS_RAILWAY ? (RAILWAY_VOLUME_MOUNT_PATH ? 'railway-volume' : 'railway-ephemeral') : (process.env.SC_STORAGE_DIR ? 'configured-directory' : 'local');
+const STORAGE_PERSISTENT = !IS_RAILWAY || Boolean(RAILWAY_VOLUME_MOUNT_PATH);
+
 const SEED_PATH = path.join(__dirname, 'seed-data.json');
 
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 const db = new DatabaseSync(DB_PATH);
 
 db.exec('PRAGMA journal_mode = WAL;');
+db.exec('PRAGMA synchronous = FULL;');
 db.exec('PRAGMA foreign_keys = ON;');
 db.exec('PRAGMA busy_timeout = 5000;');
+db.exec('PRAGMA wal_autocheckpoint = 200;');
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS app_meta (
@@ -233,6 +243,62 @@ function setSettingsObject(values) {
   }
 }
 
+
+function storageStatus() {
+  let writable = false;
+  let writeError = '';
+  try {
+    fs.mkdirSync(STORAGE_DIR, { recursive: true });
+    const probe = path.join(STORAGE_DIR, `.sc-write-test-${process.pid}-${Date.now()}`);
+    fs.writeFileSync(probe, 'ok');
+    fs.unlinkSync(probe);
+    writable = true;
+  } catch (error) {
+    writeError = String(error && error.message || error || 'Falha de escrita.');
+  }
+
+  const sizeOf = file => {
+    try { return fs.statSync(file).size; } catch { return 0; }
+  };
+
+  const count = table => {
+    try { return Number(db.prepare(`SELECT COUNT(*) AS c FROM ${table}`).get().c || 0); }
+    catch { return 0; }
+  };
+
+  return {
+    platform: IS_RAILWAY ? 'railway' : 'local',
+    mode: STORAGE_MODE,
+    persistent: STORAGE_PERSISTENT,
+    writable,
+    storageDir: STORAGE_DIR,
+    databasePath: DB_PATH,
+    railwayVolumeMountPath: RAILWAY_VOLUME_MOUNT_PATH,
+    databaseBytes: sizeOf(DB_PATH),
+    walBytes: sizeOf(`${DB_PATH}-wal`),
+    shmBytes: sizeOf(`${DB_PATH}-shm`),
+    writeError,
+    counts: {
+      products: count('products'),
+      categories: count('categories'),
+      orders: count('orders'),
+      customers: count('customers'),
+      users: count('users')
+    },
+    changeVersion: Number(getMeta('change_version', '1')) || 1
+  };
+}
+
+function checkpointDatabase(mode = 'PASSIVE') {
+  const allowed = new Set(['PASSIVE','FULL','RESTART','TRUNCATE']);
+  const selected = allowed.has(String(mode).toUpperCase()) ? String(mode).toUpperCase() : 'PASSIVE';
+  try {
+    return db.prepare(`PRAGMA wal_checkpoint(${selected})`).get() || null;
+  } catch {
+    return null;
+  }
+}
+
 function audit(userId, action, entityType, entityId = '', details = '') {
   db.prepare(`INSERT INTO audit_log(user_id,action,entity_type,entity_id,details,created_at)
               VALUES(?,?,?,?,?,?)`).run(userId || null, action, entityType, String(entityId || ''), String(details || ''), now());
@@ -441,5 +507,12 @@ module.exports = {
   bumpVersion,
   getSettingsObject,
   setSettingsObject,
-  audit
+  audit,
+  storageStatus,
+  checkpointDatabase,
+  STORAGE_DIR,
+  STORAGE_MODE,
+  STORAGE_PERSISTENT,
+  IS_RAILWAY,
+  RAILWAY_VOLUME_MOUNT_PATH
 };

@@ -162,6 +162,7 @@ Consulte [`SECURITY.md`](SECURITY.md).
 - [`ARQUITETURA-V6-FINAL.md`](ARQUITETURA-V6-FINAL.md)
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)
 - [`docs/RAILWAY.md`](docs/RAILWAY.md)
+- [`docs/PERSISTENCIA-RAILWAY.md`](docs/PERSISTENCIA-RAILWAY.md)
 - [`docs/OPERATIONS.md`](docs/OPERATIONS.md)
 - [`docs/REPOSITORY.md`](docs/REPOSITORY.md)
 - [`SECURITY.md`](SECURITY.md)

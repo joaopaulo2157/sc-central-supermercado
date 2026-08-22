@@ -106,3 +106,15 @@ Antes de divulgar:
 ## 7. Importante
 
 GitHub Pages não é usado para executar a aplicação completa. O site público deve apontar para o domínio do Railway (ou para um domínio próprio conectado ao Railway).
+
+## Verificação obrigatória de persistência
+
+Depois de conectar o Volume e redeployar, abra `/api/health` e confirme:
+
+```text
+persistent: true
+volumeMounted: true
+writable: true
+```
+
+Consulte `docs/PERSISTENCIA-RAILWAY.md`.

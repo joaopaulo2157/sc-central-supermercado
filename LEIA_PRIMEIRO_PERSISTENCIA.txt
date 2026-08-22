@@ -1,0 +1,13 @@
+SC CENTRAL V6 FINAL — CORREÇÃO DE PERSISTÊNCIA RAILWAY
+
+1. Extraia este ZIP dentro da pasta local do repositório.
+2. Aceite substituir os arquivos.
+3. Execute CORRIGIR_PERSISTENCIA_RAILWAY.bat.
+4. No Railway, confirme um Volume no MESMO serviço/ambiente.
+5. Mount Path: /app/storage.
+6. Aguarde o redeploy.
+7. Abra /api/health.
+8. Só prossiga se aparecer:
+   persistent: true
+   volumeMounted: true
+   writable: true

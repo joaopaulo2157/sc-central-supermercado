@@ -19,7 +19,7 @@
     activeTab:'dashboard',
     bootstrap:null,
     products:[], categories:[], banners:[], coupons:{}, regions:[], settings:{},
-    orders:[], users:[], audit:[], dashboard:null,
+    orders:[], users:[], audit:[], dashboard:null, storage:null,
     imageData:'',
     modalContext:null
   };
@@ -117,6 +117,7 @@
     state.coupons=data.coupons||{};
     state.regions=data.neighborhoods||[];
     state.settings=data.settings||{};
+    state.storage=data.storage||null;
     renderSettings();
   }
 
@@ -166,10 +167,14 @@
     e.dashboardOrders.innerHTML=data.recentOrders.map(o=>`<div class="mini-order" data-open-order="${esc(o.id)}"><div><strong>${esc(o.id)} • ${esc(o.customer_name)}</strong><small>${dt(o.created_at)} • ${esc(o.method)}</small></div><b>${money(o.total)}</b></div>`).join('') || '<div class="mini-order"><div><strong>Nenhum pedido ainda</strong><small>Os pedidos do site aparecerão aqui.</small></div></div>';
 
     e.statusOverview.innerHTML=data.byStatus.map(row=>`<div class="status-card"><span>${STATUS_LABEL[row.status]||esc(row.status)}</span><strong>${row.count}</strong></div>`).join('') || '<p>Nenhum pedido.</p>';
+    const storage=health.storage||state.storage||{};
+    const persistent=storage.persistent!==false;
     e.healthGrid.innerHTML=`
       <div class="health-item"><div><strong>Servidor V6</strong><small>${esc(health.time)}</small></div><b>ONLINE</b></div>
       <div class="health-item"><div><strong>Banco de dados</strong><small>${esc(health.database)}</small></div><b>SQLITE</b></div>
+      <div class="health-item ${persistent?'':'storage-alert'}"><div><strong>Persistência</strong><small>${persistent?'Banco gravando em armazenamento persistente':'ATENÇÃO: Railway sem Volume persistente'}</small></div><b>${persistent?'PERSISTENTE':'EFÊMERO'}</b></div>
       <div class="health-item"><div><strong>Versão de sincronização</strong><small>Atualizada a cada alteração</small></div><b>#${health.changeVersion}</b></div>`;
+    if(!persistent && !renderDashboard.storageWarned){toast('ATENÇÃO: o Railway está sem Volume persistente. Cadastros e configurações foram bloqueados para evitar perda de dados.');renderDashboard.storageWarned=true;}
     e.ordersBadge.textContent=s.openOrders;
   }
 
@@ -316,7 +321,7 @@
     $('#addUserBtn').addEventListener('click',()=>openUser());e.usersGrid.addEventListener('click',async ev=>{const edit=ev.target.closest('[data-edit-user]');if(edit)return openUser(edit.dataset.editUser);const disable=ev.target.closest('[data-disable-user]');if(disable&&confirm('Desativar este usuário?')){await api(`/api/admin/users/${disable.dataset.disableUser}`,{method:'DELETE'});toast('Usuário desativado.');await loadUsers();}});
     $('#reloadAuditBtn').addEventListener('click',loadAudit);
     e.settingsForm.addEventListener('submit',async ev=>{ev.preventDefault();const fd=new FormData(ev.currentTarget);const payload={storeName:fd.get('storeName'),whatsapp:String(fd.get('whatsapp')||'').replace(/\D/g,''),cartGoal:Number(fd.get('cartGoal')||0),minimumOrder:Number(fd.get('minimumOrder')||0),freeDeliveryThreshold:Number(fd.get('freeDeliveryThreshold')||0),storeEmail:fd.get('storeEmail'),pwaName:fd.get('pwaName'),defaultSubstitution:fd.get('defaultSubstitution')||'contact',primaryMessage:fd.get('primaryMessage'),openingHours:fd.get('openingHours'),address:fd.get('address'),allowDelivery:fd.get('allowDelivery')==='on',allowPickup:fd.get('allowPickup')==='on'};const data=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});state.settings=data.settings;toast('Configurações salvas no servidor.');});
-    $('#copyServerInfoBtn').addEventListener('click',async()=>{const h=await api('/api/health');const text=`SC Central V6 | API online | Banco: ${h.database} | Versão de sincronização: ${h.changeVersion}`;await navigator.clipboard?.writeText(text);toast('Informações copiadas.');});
+    $('#copyServerInfoBtn').addEventListener('click',async()=>{const h=await api('/api/health');const text=`SC Central V6 | API online | Banco: ${h.database} | Persistência: ${h.storage?.persistent?'PERSISTENTE':'EFÊMERA'} | Versão de sincronização: ${h.changeVersion}`;await navigator.clipboard?.writeText(text);toast('Informações copiadas.');});
     document.addEventListener('keydown',ev=>{if(ev.key==='Escape'){closeModal();e.userMenu.classList.remove('open');}});
   }
 
