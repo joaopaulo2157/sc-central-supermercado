@@ -355,3 +355,197 @@ small{font-size:13px!important}
 .health-item.storage-alert small {
   color: #7f1d1d;
 }
+
+
+/* ==========================================================
+   PAINEL ADMINISTRATIVO - CAMADA RESPONSIVA E LIMPA
+   ========================================================== */
+:root{
+  --admin-sidebar-width:285px;
+  --admin-topbar-height:78px;
+}
+html,body{max-width:100%;overflow-x:hidden}
+body.sidebar-open{overflow:hidden}
+.admin-shell{grid-template-columns:var(--admin-sidebar-width) minmax(0,1fr)}
+.admin-sidebar{width:var(--admin-sidebar-width);padding:18px 14px}
+.admin-brand{padding:4px 8px 18px;gap:10px}
+.admin-brand img{width:102px;max-height:44px}
+.admin-brand span{font-size:12px!important;line-height:1.25;text-transform:none;letter-spacing:0}
+.admin-brand b{display:block;margin-top:2px;color:#fff;font-size:14px}
+.server-status{margin-bottom:12px}
+.admin-sidebar__footer small{font-size:12px!important}
+.admin-topbar{min-height:var(--admin-topbar-height);padding:12px 22px}
+.admin-topbar>div:first-child{min-width:0}
+.admin-topbar h1{font-size:25px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-topbar small{font-size:11px!important}
+.admin-topbar__actions{min-width:0;align-items:center;flex-wrap:nowrap}
+.user-chip{max-width:230px}
+.user-chip>div{min-width:0}
+.user-chip strong,.user-chip small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-content{width:100%;max-width:1600px;margin:0 auto;padding:24px}
+.panel,.table-card,.kpi-card{min-width:0}
+.panel-heading,.tab-header{min-width:0}
+.tab-header>div,.panel-heading>div{min-width:0}
+.tab-header p{max-width:760px;font-size:14px!important;line-height:1.55}
+.toolbar{align-items:stretch}
+.toolbar-search{min-width:220px}
+.toolbar select,.v6-period-select{min-height:44px}
+.settings-save-hint{color:var(--muted);font-size:13px;line-height:1.45;max-width:520px}
+.settings-actions{gap:18px}
+.health-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.health-item{min-width:0}
+.health-item>div{min-width:0}
+.health-item small{white-space:normal;overflow-wrap:anywhere}
+.data-table-wrap{-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.data-table-wrap:after{content:"";display:block;height:1px}
+.admin-sidebar-overlay{
+  position:fixed;inset:0;z-index:95;background:rgba(5,15,32,.52);
+  opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease;
+  backdrop-filter:blur(2px)
+}
+.admin-sidebar-overlay.active{opacity:1;visibility:visible;pointer-events:auto}
+.admin-menu{flex:0 0 auto}
+.user-menu{max-width:min(320px,calc(100vw - 24px))}
+.admin-modal__body{overscroll-behavior:contain}
+.v6-dialog__body{max-height:min(70vh,700px);overflow:auto;overscroll-behavior:contain}
+
+/* Tablet / notebook menor */
+@media(max-width:1180px){
+  :root{--admin-sidebar-width:250px}
+  .admin-shell{grid-template-columns:var(--admin-sidebar-width) minmax(0,1fr)}
+  .admin-content{padding:20px}
+  .admin-topbar{padding-inline:18px}
+  .desktop-only{display:none!important}
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dashboard-grid{grid-template-columns:1fr}
+  .health-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .banner-admin-grid,.coupon-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .v6-category-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Mobile e tablet vertical */
+@media(max-width:900px){
+  :root{--admin-topbar-height:70px}
+  .admin-shell{display:block;min-height:100vh}
+  .admin-sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:110;
+    width:min(86vw,320px);height:100dvh;
+    transform:translateX(-103%);transition:transform .28s cubic-bezier(.2,.8,.2,1);
+    overflow-y:auto;overscroll-behavior:contain;
+    box-shadow:22px 0 60px rgba(0,0,0,.22)
+  }
+  .admin-sidebar.open{transform:translateX(0)}
+  .admin-menu{display:grid;place-items:center;width:44px;height:44px}
+  .admin-main{width:100%;min-width:0}
+  .admin-topbar{
+    min-height:var(--admin-topbar-height);
+    padding:10px 14px;gap:10px
+  }
+  .admin-topbar h1{font-size:21px!important}
+  .admin-topbar small{display:none}
+  .admin-topbar__actions{gap:6px}
+  .admin-topbar__actions>.btn-secondary{display:none!important}
+  .user-chip{max-width:52px;padding:5px;border-radius:14px}
+  .user-chip>div,.user-chip>b{display:none}
+  .user-chip>span{width:38px;height:38px}
+  .admin-content{padding:14px}
+  .tab-header,.panel-heading{gap:12px}
+  .tab-header{flex-wrap:wrap;align-items:stretch}
+  .tab-header>button,.tab-header>select{width:100%}
+  .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .toolbar-search{grid-column:1/-1;min-width:0}
+  .toolbar>button{min-width:0}
+  .orders-toolbar{grid-template-columns:1fr 1fr}
+  .orders-toolbar .toolbar-search{grid-column:1/-1}
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .kpi-card{min-height:120px;padding:16px;border-radius:17px}
+  .kpi-card strong{font-size:24px!important}
+  .dashboard-grid,.v6-report-grid,.v6-import-grid{grid-template-columns:1fr}
+  .health-grid{grid-template-columns:1fr}
+  .banner-admin-grid,.coupon-admin-grid,.v6-category-admin-grid,.v6-customers-grid{grid-template-columns:1fr}
+  .settings-form{grid-template-columns:1fr;max-width:none}
+  .settings-form .full{grid-column:auto}
+  .settings-checks{flex-direction:column;align-items:flex-start}
+  .settings-actions{flex-direction:column;align-items:stretch!important}
+  .settings-actions .btn-primary{width:100%;min-height:48px}
+  .settings-save-hint{text-align:center}
+  .data-table{min-width:820px}
+  .table-card{border-radius:16px}
+  .data-table-wrap{position:relative}
+  .v6-customer-card{grid-template-columns:auto minmax(0,1fr)}
+  .v6-customer-value{grid-column:2;text-align:left}
+  .admin-modal{
+    top:auto;right:0;left:0;bottom:0;width:100%;max-height:92dvh;
+    border-radius:24px 24px 0 0;transform:translateY(105%)
+  }
+  .admin-modal.active{transform:translateY(0)}
+  .admin-modal__header{padding:16px}
+  .admin-modal__body{padding:16px}
+  .modal-form-v4,.modal-form-v6{grid-template-columns:1fr!important}
+  .modal-form-v4 .full,.modal-form-v6 .full{grid-column:auto!important}
+  .modal-actions-v4{position:sticky;bottom:-16px;background:#fff;padding:12px 0 4px}
+  .v6-dialog{width:calc(100% - 20px);max-height:92dvh}
+  .v6-dialog__head{padding:16px}
+  .v6-dialog__body{padding:16px;grid-template-columns:1fr;max-height:65dvh}
+  .v6-dialog__body label.full{grid-column:auto}
+  .v6-dialog__foot{padding:12px 16px}
+  .v6-day{min-width:58px}
+}
+
+/* Celulares */
+@media(max-width:600px){
+  body{font-size:15px!important}
+  .admin-topbar{position:sticky}
+  .admin-topbar>div:first-child{gap:8px}
+  .admin-topbar h1{font-size:19px!important;max-width:38vw}
+  .admin-topbar__actions .btn-primary{
+    width:auto!important;min-width:44px;max-width:54px;
+    padding:0 12px!important;font-size:0!important
+  }
+  .admin-topbar__actions .btn-primary:after{
+    content:"+";font-size:22px!important;line-height:1
+  }
+  .admin-content{padding:12px}
+  .kpi-grid{grid-template-columns:1fr}
+  .kpi-card{min-height:108px}
+  .kpi-card__top{align-items:flex-start}
+  .panel{padding:16px;border-radius:16px}
+  .panel-heading h2,.tab-header h2{font-size:18px!important}
+  .tab-header p{font-size:13px!important}
+  .toolbar{grid-template-columns:1fr}
+  .toolbar-search,.toolbar select,.toolbar button{grid-column:1;width:100%}
+  .orders-toolbar{grid-template-columns:1fr}
+  .category-bar__row{grid-template-columns:minmax(80px,120px) 1fr 30px}
+  .mini-order{grid-template-columns:1fr}
+  .mini-order>b{justify-self:start}
+  .status-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .order-card-v4{grid-template-columns:1fr!important}
+  .order-card-v4__meta,.order-card-v4__actions{justify-self:stretch;text-align:left}
+  .order-card-v4__actions button{width:100%}
+  .user-card-v4{grid-template-columns:1fr!important}
+  .audit-row{grid-template-columns:1fr!important;gap:8px}
+  .audit-row>*{min-width:0}
+  .card-actions{flex-wrap:wrap}
+  .card-actions button{flex:1 1 auto}
+  .v6-category-card{grid-template-columns:auto minmax(0,1fr);padding:16px}
+  .v6-category-card__copy p{font-size:13px}
+  .v6-customer-card{padding:15px}
+  .v6-customer-avatar{width:44px;height:44px}
+  .v6-report-wide{overflow:hidden}
+  .v6-daily-chart{padding-inline:0}
+  .user-menu{position:fixed;right:10px;top:66px}
+  .admin-toast,.v6-notice{left:12px;right:12px;bottom:12px;min-width:0}
+}
+
+/* Celulares muito estreitos */
+@media(max-width:380px){
+  .admin-topbar h1{max-width:32vw;font-size:17px!important}
+  .admin-menu{width:40px;height:40px}
+  .user-chip{max-width:46px}
+  .user-chip>span{width:34px;height:34px}
+  .admin-topbar__actions .btn-primary{max-width:44px}
+  .category-bar__row{grid-template-columns:78px 1fr 26px}
+  .v6-category-card{grid-template-columns:1fr}
+  .v6-category-card__icon{width:52px;height:52px}
+  .v6-category-card__actions{grid-column:1}
+}

@@ -11,12 +11,14 @@
   <link rel="stylesheet" href="admin-v6.css">
 </head>
 <body class="admin-v4-loading">
-  <div class="admin-loading" id="adminLoading"><div class="admin-loading__mark">SC</div><strong>Conectando ao servidor V6 FINAL...</strong></div>
+  <div class="admin-loading" id="adminLoading"><div class="admin-loading__mark">SC</div><strong>Carregando painel administrativo...</strong></div>
+
+  <div class="admin-sidebar-overlay" id="adminSidebarOverlay" aria-hidden="true"></div>
 
   <div class="admin-shell">
     <aside class="admin-sidebar" id="adminSidebar">
-      <a class="admin-brand" href="index.html"><img src="assets/logo-sc-central.png" alt="SC Central"><span>Painel <b>V6 FINAL</b></span></a>
-      <div class="server-status online" id="serverStatus"><i></i><div><strong>Servidor conectado</strong><small>SQLite + API</small></div></div>
+      <a class="admin-brand" href="index.html"><img src="assets/logo-sc-central.png" alt="SC Central"><span>Administração <b>SC Central</b></span></a>
+      <div class="server-status online" id="serverStatus"><i></i><div><strong>Sistema online</strong><small>Dados conectados</small></div></div>
       <nav class="admin-nav">
         <button class="active" data-tab="dashboard">▦ <span>Dashboard</span></button>
         <button data-tab="products" data-min-role="manager">🛒 <span>Produtos</span></button>
@@ -34,18 +36,18 @@
       </nav>
       <div class="admin-sidebar__footer">
         <a href="index.html" target="_blank">↗ Abrir loja</a>
-        <small id="sidebarVersion">Supermercado Central</small>
+        <small id="sidebarVersion">Painel administrativo</small>
       </div>
     </aside>
 
     <main class="admin-main">
       <header class="admin-topbar">
         <div>
-          <button class="admin-menu" id="adminMenu">☰</button>
-          <div><small>Supermercado Central</small><h1 id="pageTitle">Dashboard</h1></div>
+          <button class="admin-menu" id="adminMenu" type="button" aria-label="Abrir menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
+          <div><small>ÁREA ADMINISTRATIVA</small><h1 id="pageTitle">Dashboard</h1></div>
         </div>
         <div class="admin-topbar__actions">
-          <button class="btn-secondary desktop-only" id="refreshBtn">↻ Sincronizar</button>
+          <button class="btn-secondary desktop-only" id="refreshBtn">↻ Atualizar</button>
           <button class="btn-secondary desktop-only" id="exportBtn" data-min-role="admin">Exportar backup</button>
           <button class="btn-primary" id="quickAddProduct" data-min-role="manager">+ Novo produto</button>
           <div class="user-menu-wrap">
@@ -61,7 +63,6 @@
 
       <section class="admin-content">
         <div class="admin-tab active" id="tab-dashboard">
-          <div class="v4-callout"><div><span>V6 FINAL ATIVA</span><strong>Dados compartilhados em tempo real pelo servidor</strong><p>O painel agora grava em SQLite e a loja consulta a mesma API. Alterações deixam de ficar presas a um único navegador.</p></div><div class="v4-callout__icons"><b>API</b><b>DB</b><b>AUTH</b></div></div>
           <div class="kpi-grid" id="kpiGrid"></div>
           <div class="dashboard-grid">
             <article class="panel"><div class="panel-heading"><div><small>VISÃO GERAL</small><h2>Produtos por departamento</h2></div></div><div class="category-bars" id="categoryBars"></div></article>
@@ -69,7 +70,7 @@
           </div>
           <div class="dashboard-grid dashboard-grid--v4">
             <article class="panel"><div class="panel-heading"><div><small>OPERAÇÃO</small><h2>Pedidos por status</h2></div></div><div class="status-overview" id="statusOverview"></div></article>
-            <article class="panel"><div class="panel-heading"><div><small>SERVIDOR</small><h2>Saúde da V6 FINAL</h2></div></div><div class="health-grid" id="healthGrid"></div></article>
+            <article class="panel"><div class="panel-heading"><div><small>SISTEMA</small><h2>Status da operação</h2></div></div><div class="health-grid" id="healthGrid"></div></article>
           </div>
         </div>
 
@@ -79,7 +80,7 @@
         </div>
 
         <div class="admin-tab" id="tab-categories">
-          <div class="tab-header"><div><small>CATÁLOGO</small><h2>Categorias e departamentos</h2><p>Organize a navegação da loja sem alterar o código.</p></div><button class="btn-primary" id="v6AddCategoryBtn">+ Nova categoria</button></div>
+          <div class="tab-header"><div><small>CATÁLOGO</small><h2>Categorias e departamentos</h2><p>Organize como os clientes encontram os produtos na loja.</p></div><button class="btn-primary" id="v6AddCategoryBtn">+ Nova categoria</button></div>
           <div class="v6-category-admin-grid" id="v6CategoriesGrid"></div>
         </div>
 
@@ -92,12 +93,12 @@
         </div>
 
         <div class="admin-tab" id="tab-banners">
-          <div class="tab-header"><div><small>CARROSSEL DA HOME</small><h2>Banners promocionais</h2><p>As campanhas são gravadas no servidor e aparecem para todos os clientes.</p></div><button class="btn-primary" id="addBannerBtn">+ Novo banner</button></div>
+          <div class="tab-header"><div><small>CARROSSEL DA HOME</small><h2>Banners promocionais</h2><p>Crie, edite e organize as campanhas exibidas na página inicial.</p></div><button class="btn-primary" id="addBannerBtn">+ Novo banner</button></div>
           <div class="banner-admin-grid" id="bannerAdminGrid"></div>
         </div>
 
         <div class="admin-tab" id="tab-coupons">
-          <div class="tab-header"><div><small>PROMOÇÕES</small><h2>Cupons de desconto</h2><p>O servidor valida o cupom e recalcula o pedido sem confiar no preço enviado pelo navegador.</p></div><button class="btn-primary" id="addCouponBtn">+ Novo cupom</button></div>
+          <div class="tab-header"><div><small>PROMOÇÕES</small><h2>Cupons de desconto</h2><p>Crie cupons, defina descontos, pedido mínimo e período de uso.</p></div><button class="btn-primary" id="addCouponBtn">+ Novo cupom</button></div>
           <div class="coupon-admin-grid" id="couponAdminGrid"></div>
         </div>
 
@@ -136,7 +137,7 @@
         </div>
 
         <div class="admin-tab" id="tab-settings">
-          <div class="tab-header"><div><small>LOJA</small><h2>Configurações gerais</h2><p>As alterações são gravadas no banco e propagadas para a loja.</p></div></div>
+          <div class="tab-header"><div><small>LOJA</small><h2>Configurações gerais</h2><p>As alterações salvas passam a valer para a loja.</p></div></div>
           <form class="settings-form panel" id="settingsForm">
             <label><span>Nome da loja</span><input name="storeName" required></label>
             <label><span>WhatsApp (55 + DDD + número)</span><input name="whatsapp" placeholder="5582999999999"></label>
@@ -150,7 +151,7 @@
             <label class="full"><span>Horário de funcionamento</span><input name="openingHours"></label>
             <label class="full"><span>Endereço da loja</span><input name="address"></label>
             <div class="settings-checks full"><label><input type="checkbox" name="allowDelivery"> Permitir entrega</label><label><input type="checkbox" name="allowPickup"> Permitir retirada</label></div>
-            <div class="settings-actions full"><button type="button" class="btn-secondary" id="copyServerInfoBtn">Copiar informações da V6 FINAL</button><button type="submit" class="btn-primary">Salvar configurações</button></div>
+            <div class="settings-actions full"><span class="settings-save-hint">As alterações ficam disponíveis para a loja após salvar.</span><button type="submit" class="btn-primary">Salvar configurações</button></div>
           </form>
         </div>
       </section>

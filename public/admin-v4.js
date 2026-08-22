@@ -1,6 +1,6 @@
 // ==========================================================
-// PAINEL ADMINISTRATIVO V6 FINAL - SUPERMERCADO SC CENTRAL
-// API + SQLite + autenticação + usuários + permissões.
+// PAINEL ADMINISTRATIVO - SUPERMERCADO SC CENTRAL
+// Catálogo, pedidos, clientes, usuários, relatórios e configurações.
 // ==========================================================
 
 (() => {
@@ -27,7 +27,7 @@
   const $ = sel => document.querySelector(sel);
   const $$ = sel => [...document.querySelectorAll(sel)];
   const e = {
-    loading:$('#adminLoading'), sidebar:$('#adminSidebar'), backdrop:$('#adminBackdrop'), modal:$('#adminModal'),
+    loading:$('#adminLoading'), sidebar:$('#adminSidebar'), sidebarOverlay:$('#adminSidebarOverlay'), backdrop:$('#adminBackdrop'), modal:$('#adminModal'),
     modalBody:$('#modalBody'), modalTitle:$('#modalTitle'), modalEyebrow:$('#modalEyebrow'), modalClose:$('#modalClose'),
     pageTitle:$('#pageTitle'), toast:$('#adminToast'), menu:$('#adminMenu'),
     userMenu:$('#userMenu'), userMenuBtn:$('#userMenuBtn'), userName:$('#userName'), userRole:$('#userRole'), userInitial:$('#userInitial'),
@@ -130,6 +130,9 @@
     const names={dashboard:'Dashboard',products:'Produtos',categories:'Categorias',import:'Importar produtos',banners:'Banners',coupons:'Cupons',delivery:'Entrega',orders:'Pedidos',customers:'Clientes',reports:'Relatórios',users:'Usuários',audit:'Auditoria',settings:'Configurações'};
     e.pageTitle.textContent=names[tab]||'Painel';
     e.sidebar.classList.remove('open');
+    e.sidebarOverlay?.classList.remove('active');
+    e.menu?.setAttribute('aria-expanded','false');
+    document.body.classList.remove('sidebar-open');
     renderTab(tab).catch(err=>toast(err.message));
   }
 
@@ -169,11 +172,11 @@
     e.statusOverview.innerHTML=data.byStatus.map(row=>`<div class="status-card"><span>${STATUS_LABEL[row.status]||esc(row.status)}</span><strong>${row.count}</strong></div>`).join('') || '<p>Nenhum pedido.</p>';
     const storage=health.storage||state.storage||{};
     const persistent=storage.persistent!==false;
+    const updatedAt = health.time ? dt(health.time) : 'Agora';
     e.healthGrid.innerHTML=`
-      <div class="health-item"><div><strong>Servidor V6</strong><small>${esc(health.time)}</small></div><b>ONLINE</b></div>
-      <div class="health-item"><div><strong>Banco de dados</strong><small>${esc(health.database)}</small></div><b>SQLITE</b></div>
-      <div class="health-item ${persistent?'':'storage-alert'}"><div><strong>Persistência</strong><small>${persistent?'Banco gravando em armazenamento persistente':'ATENÇÃO: Railway sem Volume persistente'}</small></div><b>${persistent?'PERSISTENTE':'EFÊMERO'}</b></div>
-      <div class="health-item"><div><strong>Versão de sincronização</strong><small>Atualizada a cada alteração</small></div><b>#${health.changeVersion}</b></div>`;
+      <div class="health-item"><div><strong>Sistema</strong><small>Última verificação: ${esc(updatedAt)}</small></div><b>ONLINE</b></div>
+      <div class="health-item ${persistent?'':'storage-alert'}"><div><strong>Armazenamento</strong><small>${persistent?'Cadastros e configurações protegidos':'ATENÇÃO: armazenamento temporário'}</small></div><b>${persistent?'PROTEGIDO':'ATENÇÃO'}</b></div>
+      <div class="health-item"><div><strong>Loja online</strong><small>Catálogo e painel conectados</small></div><b>ATIVA</b></div>`;
     if(!persistent && !renderDashboard.storageWarned){toast('ATENÇÃO: o Railway está sem Volume persistente. Cadastros e configurações foram bloqueados para evitar perda de dados.');renderDashboard.storageWarned=true;}
     e.ordersBadge.textContent=s.openOrders;
   }
@@ -263,7 +266,7 @@
   function renderBanners(){
     e.bannerAdminGrid.innerHTML=state.banners.map(b=>`<article class="banner-admin-card">${b.image?`<img src="${esc(b.image)}" alt="" onerror="this.remove()">`:''}<small>${esc(b.eyebrow||'BANNER')}</small><strong>${esc(b.title)}</strong><p>${esc(b.text||'')}</p><div class="card-actions"><button data-edit-banner="${b.id}">Editar</button><button data-toggle-banner="${b.id}">${b.active?'Desativar':'Ativar'}</button><button data-delete-banner="${b.id}">Excluir</button></div></article>`).join('')||'<p>Nenhum banner.</p>';
   }
-  function bannerForm(b={}){return `<form class="modal-form-v4" id="bannerForm"><label class="full"><span>Título</span><input name="title" required value="${esc(b.title||'')}"></label><label class="full"><span>Chamada superior</span><input name="eyebrow" value="${esc(b.eyebrow||'V6 • OFERTA')}"></label><label class="full"><span>Texto</span><textarea name="text" rows="3">${esc(b.text||'')}</textarea></label><label><span>Texto do botão</span><input name="button" value="${esc(b.button||'Ver produtos')}"></label><label><span>Destino</span><input name="target" value="${esc(b.target||'#produtos')}"></label><label><span>Ícone</span><input name="icon" value="${esc(b.icon||'🛒')}"></label><label><span>Tema</span><select name="theme"><option value="blue" ${b.theme==='blue'?'selected':''}>Azul</option><option value="fresh" ${b.theme==='fresh'?'selected':''}>Fresco</option><option value="dark" ${b.theme==='dark'?'selected':''}>Escuro</option></select></label><label class="full"><span>Imagem / URL</span><input name="image" value="${esc(b.image||'')}"></label><label><span>Ordem</span><input name="sortOrder" type="number" value="${b.sortOrder??0}"></label><label class="modal-check"><input type="checkbox" name="active" ${b.active===false?'':'checked'}><span>Ativo</span></label><div class="modal-actions-v4"><button type="button" class="btn-secondary" data-close-modal>Cancelar</button><button type="submit" class="btn-primary">Salvar banner</button></div></form>`;}
+  function bannerForm(b={}){return `<form class="modal-form-v4" id="bannerForm"><label class="full"><span>Título</span><input name="title" required value="${esc(b.title||'')}"></label><label class="full"><span>Chamada superior</span><input name="eyebrow" value="${esc(b.eyebrow||'OFERTA')}"></label><label class="full"><span>Texto</span><textarea name="text" rows="3">${esc(b.text||'')}</textarea></label><label><span>Texto do botão</span><input name="button" value="${esc(b.button||'Ver produtos')}"></label><label><span>Destino</span><input name="target" value="${esc(b.target||'#produtos')}"></label><label><span>Ícone</span><input name="icon" value="${esc(b.icon||'🛒')}"></label><label><span>Tema</span><select name="theme"><option value="blue" ${b.theme==='blue'?'selected':''}>Azul</option><option value="fresh" ${b.theme==='fresh'?'selected':''}>Fresco</option><option value="dark" ${b.theme==='dark'?'selected':''}>Escuro</option></select></label><label class="full"><span>Imagem / URL</span><input name="image" value="${esc(b.image||'')}"></label><label><span>Ordem</span><input name="sortOrder" type="number" value="${b.sortOrder??0}"></label><label class="modal-check"><input type="checkbox" name="active" ${b.active===false?'':'checked'}><span>Ativo</span></label><div class="modal-actions-v4"><button type="button" class="btn-secondary" data-close-modal>Cancelar</button><button type="submit" class="btn-primary">Salvar banner</button></div></form>`;}
   function openBanner(id=null){const b=id?state.banners.find(x=>x.id===Number(id)):null;openModal(b?'Editar banner':'Novo banner','CAMPANHA',bannerForm(b||{}));$('#bannerForm').addEventListener('submit',async ev=>{ev.preventDefault();const fd=new FormData(ev.currentTarget);const payload={title:fd.get('title'),eyebrow:fd.get('eyebrow'),text:fd.get('text'),button:fd.get('button'),target:fd.get('target'),icon:fd.get('icon'),theme:fd.get('theme'),image:fd.get('image'),sortOrder:Number(fd.get('sortOrder')||0),active:fd.get('active')==='on'};await api(id?`/api/admin/banners/${id}`:'/api/admin/banners',{method:id?'PUT':'POST',body:JSON.stringify(payload)});toast('Banner salvo.');closeModal();await loadBootstrap();renderBanners();});}
 
   function renderCoupons(){e.couponAdminGrid.innerHTML=Object.entries(state.coupons).map(([code,c])=>`<article class="coupon-card"><strong>${esc(code)}</strong><span>${esc(c.label||'')}</span><span>${c.type==='percent'?`${c.value}%`:money(c.value)} • mínimo ${money(c.minimumOrder||0)} • ${c.active?'Ativo':'Inativo'}</span><div class="card-actions"><button data-edit-coupon="${esc(code)}">Editar</button><button data-toggle-coupon="${esc(code)}">${c.active?'Desativar':'Ativar'}</button><button data-delete-coupon="${esc(code)}">Excluir</button></div></article>`).join('')||'<p>Nenhum cupom.</p>';}
@@ -303,7 +306,19 @@
   function bindEvents(){
     $$('.admin-nav button[data-tab]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
     document.addEventListener('click',ev=>{const go=ev.target.closest('[data-go-tab]');if(go)switchTab(go.dataset.goTab);const close=ev.target.closest('[data-close-modal]');if(close)closeModal();});
-    e.menu.addEventListener('click',()=>e.sidebar.classList.toggle('open'));
+    e.menu.addEventListener('click',()=>{
+      const open=!e.sidebar.classList.contains('open');
+      e.sidebar.classList.toggle('open',open);
+      e.sidebarOverlay?.classList.toggle('active',open);
+      e.menu.setAttribute('aria-expanded',String(open));
+      document.body.classList.toggle('sidebar-open',open);
+    });
+    e.sidebarOverlay?.addEventListener('click',()=>{
+      e.sidebar.classList.remove('open');
+      e.sidebarOverlay.classList.remove('active');
+      e.menu.setAttribute('aria-expanded','false');
+      document.body.classList.remove('sidebar-open');
+    });
     e.modalClose.addEventListener('click',closeModal); e.backdrop.addEventListener('click',closeModal);
     e.userMenuBtn.addEventListener('click',()=>e.userMenu.classList.toggle('open'));
     document.addEventListener('click',ev=>{if(!ev.target.closest('.user-menu-wrap'))e.userMenu.classList.remove('open');});
@@ -320,10 +335,25 @@
     e.orderSearch.addEventListener('input',()=>{clearTimeout(loadOrders.t);loadOrders.t=setTimeout(loadOrders,300)});e.orderStatusFilter.addEventListener('change',loadOrders);$('#reloadOrdersBtn').addEventListener('click',loadOrders);e.ordersList.addEventListener('click',ev=>{const btn=ev.target.closest('[data-view-order]');if(btn)openOrder(btn.dataset.viewOrder)});e.dashboardOrders.addEventListener('click',ev=>{const row=ev.target.closest('[data-open-order]');if(row)openOrder(row.dataset.openOrder)});
     $('#addUserBtn').addEventListener('click',()=>openUser());e.usersGrid.addEventListener('click',async ev=>{const edit=ev.target.closest('[data-edit-user]');if(edit)return openUser(edit.dataset.editUser);const disable=ev.target.closest('[data-disable-user]');if(disable&&confirm('Desativar este usuário?')){await api(`/api/admin/users/${disable.dataset.disableUser}`,{method:'DELETE'});toast('Usuário desativado.');await loadUsers();}});
     $('#reloadAuditBtn').addEventListener('click',loadAudit);
-    e.settingsForm.addEventListener('submit',async ev=>{ev.preventDefault();const fd=new FormData(ev.currentTarget);const payload={storeName:fd.get('storeName'),whatsapp:String(fd.get('whatsapp')||'').replace(/\D/g,''),cartGoal:Number(fd.get('cartGoal')||0),minimumOrder:Number(fd.get('minimumOrder')||0),freeDeliveryThreshold:Number(fd.get('freeDeliveryThreshold')||0),storeEmail:fd.get('storeEmail'),pwaName:fd.get('pwaName'),defaultSubstitution:fd.get('defaultSubstitution')||'contact',primaryMessage:fd.get('primaryMessage'),openingHours:fd.get('openingHours'),address:fd.get('address'),allowDelivery:fd.get('allowDelivery')==='on',allowPickup:fd.get('allowPickup')==='on'};const data=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});state.settings=data.settings;toast('Configurações salvas no servidor.');});
-    $('#copyServerInfoBtn').addEventListener('click',async()=>{const h=await api('/api/health');const text=`SC Central V6 | API online | Banco: ${h.database} | Persistência: ${h.storage?.persistent?'PERSISTENTE':'EFÊMERA'} | Versão de sincronização: ${h.changeVersion}`;await navigator.clipboard?.writeText(text);toast('Informações copiadas.');});
-    document.addEventListener('keydown',ev=>{if(ev.key==='Escape'){closeModal();e.userMenu.classList.remove('open');}});
+    e.settingsForm.addEventListener('submit',async ev=>{ev.preventDefault();const fd=new FormData(ev.currentTarget);const payload={storeName:fd.get('storeName'),whatsapp:String(fd.get('whatsapp')||'').replace(/\D/g,''),cartGoal:Number(fd.get('cartGoal')||0),minimumOrder:Number(fd.get('minimumOrder')||0),freeDeliveryThreshold:Number(fd.get('freeDeliveryThreshold')||0),storeEmail:fd.get('storeEmail'),pwaName:fd.get('pwaName'),defaultSubstitution:fd.get('defaultSubstitution')||'contact',primaryMessage:fd.get('primaryMessage'),openingHours:fd.get('openingHours'),address:fd.get('address'),allowDelivery:fd.get('allowDelivery')==='on',allowPickup:fd.get('allowPickup')==='on'};const data=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});state.settings=data.settings;toast('Configurações salvas com sucesso.');});
+    document.addEventListener('keydown',ev=>{if(ev.key==='Escape'){
+      closeModal();
+      e.userMenu.classList.remove('open');
+      e.sidebar.classList.remove('open');
+      e.sidebarOverlay?.classList.remove('active');
+      e.menu?.setAttribute('aria-expanded','false');
+      document.body.classList.remove('sidebar-open');
+    }});
   }
+
+  window.addEventListener('resize',()=>{
+    if(window.innerWidth>900){
+      e.sidebar.classList.remove('open');
+      e.sidebarOverlay?.classList.remove('active');
+      e.menu?.setAttribute('aria-expanded','false');
+      document.body.classList.remove('sidebar-open');
+    }
+  });
 
   async function init(){
     const ok=await checkAuth(); if(!ok)return;

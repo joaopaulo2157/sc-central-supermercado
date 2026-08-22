@@ -1,5 +1,5 @@
 // ==========================================================
-// SC CENTRAL - ADMIN V6 FINAL
+// SC CENTRAL - RECURSOS DO PAINEL
 // Categorias, importação CSV, exportação e relatórios.
 // ==========================================================
 (() => {
@@ -37,7 +37,7 @@
     const c=id?data.categories.find(x=>x.id===Number(id)):null;
     const d=ensureDialog();
     d.innerHTML=`<form method="dialog" class="v6-dialog__shell" id="v6CategoryForm">
-      <div class="v6-dialog__head"><div><small>CATÁLOGO V6</small><h2>${c?'Editar categoria':'Nova categoria'}</h2></div><button value="cancel" aria-label="Fechar">×</button></div>
+      <div class="v6-dialog__head"><div><small>CATÁLOGO</small><h2>${c?'Editar categoria':'Nova categoria'}</h2></div><button value="cancel" aria-label="Fechar">×</button></div>
       <div class="v6-dialog__body">
         <label><span>Nome</span><input name="name" required value="${esc(c?.name||'')}"></label>
         <label><span>Identificador (slug)</span><input name="slug" value="${esc(c?.slug||'')}" placeholder="gerado automaticamente"></label>
