@@ -5,6 +5,7 @@
 // ==========================================================
 
 (async () => {
+  const ASSET_VERSION = '6.0.3';
   const KEYS = {
     products: 'scCentralV3Products',
     settings: 'scCentralV3Settings',
@@ -17,7 +18,7 @@
   function loadScript(src) {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = src;
+      script.src = `${src}?v=${ASSET_VERSION}`;
       script.onload = resolve;
       script.onerror = reject;
       document.body.appendChild(script);

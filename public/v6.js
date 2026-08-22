@@ -136,7 +136,14 @@
   window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredPrompt=event;if(installButton)installButton.hidden=false;});
   installButton?.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installButton.hidden=true;});
   window.addEventListener('appinstalled',()=>{if(installButton)installButton.hidden=true;if(typeof showToast==='function')showToast('📲','SC Central instalado com sucesso.');});
-  if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/sw.js', { updateViaCache:'none' })
+        .then(registration => registration.update())
+        .catch(() => {});
+    });
+  }
 
   // Indicador visual da arquitetura final.
   const sync=document.querySelector('#v4SyncChip b');if(sync&&window.SC_V4_ONLINE)sync.textContent='V6 sincronizada';

@@ -10,13 +10,13 @@
   <meta property="og:description" content="Monte sua compra online e finalize com o atendimento no WhatsApp." />
   <meta property="og:type" content="website" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <title>Supermercado SC Central | Mercado online </title>
+  <title>Supermercado SC Central | V6 Final - Mercado online e WhatsApp</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="store-v6.css" />
+  <link rel="stylesheet" href="store-v6.css?v=6.0.3" />
 </head>
 <body>
   <div class="page-loader" id="pageLoader" aria-hidden="true">
@@ -30,6 +30,13 @@
   <div class="topbar">
     <div class="container topbar__content">
       <p>🚚 Entrega rápida • 🛒 Compre online • 💬 Finalize pelo WhatsApp</p>
+      <div class="topbar__actions">
+        <a href="#ofertas">Ofertas do dia</a>
+        <a href="#contato">Atendimento</a>
+        <span class="v4-sync-chip" id="v4SyncChip"><i></i><b>Conectando...</b></span>
+        <button class="pwa-install" id="installPwaBtn" type="button" hidden>⬇ Instalar</button>
+        <a href="login.html" class="admin-access">Painel V6</a>
+      </div>
     </div>
   </div>
 
@@ -72,6 +79,7 @@
         <a href="#beneficios">Vantagens</a>
         <a href="#contato">Contato</a>
         <a href="#acompanhar">Acompanhar pedido</a>
+        <a href="login.html" class="nav-admin">⚙ Painel</a>
       </div>
     </nav>
   </header>
@@ -167,6 +175,20 @@
       </div>
     </section>
 
+    <section class="v3-trust-strip">
+      <div class="container v3-trust-strip__inner">
+        <span><b>V6 FINAL</b> catálogo profissional</span>
+        <span>•</span>
+        <span>estoque visual</span>
+        <span>•</span>
+        <span>taxa por bairro</span>
+        <span>•</span>
+        <span>pedidos sincronizados</span>
+        <span>•</span>
+        <span>painel administrativo</span>
+      </div>
+    </section>
+
     <section class="promo-showcase" aria-label="Destaques da semana">
       <div class="container promo-showcase__grid">
         <article class="promo-mini promo-mini--blue reveal">
@@ -245,7 +267,7 @@
       <div class="container">
         <div class="section-heading reveal">
           <div>
-            <span class="eyebrow eyebrow--blue">DEPARTAMENTOS</span>
+            <span class="eyebrow eyebrow--blue">DEPARTAMENTOS V3</span>
             <h2>Um supermercado inteiro na sua tela.</h2>
           </div>
           <p>Atalhos visuais para levar o cliente diretamente aos setores mais procurados.</p>
@@ -268,7 +290,7 @@
     <section class="section shopping-mode">
       <div class="container shopping-mode__grid">
         <div class="shopping-mode__intro reveal">
-          <span class="eyebrow eyebrow--blue">COMPRA MAIS INTELIGENTE</span>
+          <span class="eyebrow eyebrow--blue">V2 • COMPRA MAIS INTELIGENTE</span>
           <h2>Escolha como você quer receber sua compra.</h2>
           <p>Na finalização, o cliente informa seus dados, escolhe entrega ou retirada, forma de pagamento, horário preferido e observações. Tudo segue organizado para o WhatsApp.</p>
           <div class="shopping-mode__tags">
@@ -411,7 +433,7 @@
     <section class="section v4-tracking-section" id="acompanhar">
       <div class="container v4-tracking-layout">
         <div class="v4-tracking-copy reveal">
-          <span class="eyebrow eyebrow--blue">ACOMPANHAMENTO DE PEDIDO</span>
+          <span class="eyebrow eyebrow--blue">V6 FINAL • ACOMPANHAMENTO DE PEDIDO</span>
           <h2>Veja em que etapa está sua compra.</h2>
           <p>Depois que o pedido é enviado, ele recebe um código único. Informe o código e o telefone usado na compra para acompanhar a atualização feita pela equipe do supermercado.</p>
           <div class="v4-live-features">
@@ -436,7 +458,7 @@
         <div class="faq-intro reveal">
           <span class="eyebrow eyebrow--blue">DÚVIDAS RÁPIDAS</span>
           <h2>Comprar pelo site é simples.</h2>
-          <p>Deixando o processo mais claro para o cliente e mais organizado para o atendimento da loja.</p>
+          <p>A V2 deixa o processo mais claro para o cliente e mais organizado para o atendimento da loja.</p>
         </div>
 
         <div class="faq-list reveal">
@@ -501,8 +523,8 @@
       </div>
     </div>
     <div class="container footer__bottom">
-      <span>© <span id="currentYear"></span> Supermercado Central.</span>
-      <span>Todos os direitos reservados. • Desenvolvido por <a href="admin.html">Alfa Tech.</a>.</span>
+      <span>© <span id="currentYear"></span> Supermercado SC Central.</span>
+      <span>Todos os direitos reservados. • <a href="admin.html">Painel administrativo V3</a></span>
     </div>
   </footer>
 
@@ -695,6 +717,6 @@
 
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"GroceryStore","name":"Supermercado SC Central","description":"Supermercado com catálogo online e finalização de pedidos por WhatsApp."}</script>
-  <script src="v4-boot.js"></script>
+  <script src="v4-boot.js?v=6.0.3"></script>
 </body>
 </html>

@@ -473,7 +473,24 @@ function setupCounters() {
 }
 
 function setupRevealAnimations() {
-  const nodes = document.querySelectorAll(".reveal");
+  const nodes = [...document.querySelectorAll(".reveal")];
+  const heroNodes = nodes.filter(node => node.closest(".hero"));
+  const scrollNodes = nodes.filter(node => !node.closest(".hero"));
+
+  // A hero já nasce na viewport. A entrada dela passa a ser determinística
+  // e não depende do timing do IntersectionObserver.
+  heroNodes.forEach(node => node.classList.remove("in-view"));
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      heroNodes.forEach(node => node.classList.add("in-view"));
+    });
+  });
+
+  if (!("IntersectionObserver" in window)) {
+    scrollNodes.forEach(node => node.classList.add("in-view"));
+    return;
+  }
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -483,7 +500,21 @@ function setupRevealAnimations() {
     });
   }, { threshold: .12 });
 
-  nodes.forEach(node => observer.observe(node));
+  scrollNodes.forEach(node => observer.observe(node));
+}
+
+function restartHeroMotion() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const animated = document.querySelectorAll(
+    ".hero-card, .floating-card, .ticker-track, .hero__grid-overlay"
+  );
+
+  animated.forEach(node => {
+    node.style.animation = "none";
+    void node.offsetWidth;
+    node.style.animation = "";
+  });
 }
 
 function setupNavHighlight() {
@@ -978,6 +1009,16 @@ function init() {
   setupNavHighlight();
   setupMagneticButton();
   initEvents();
+
+  restartHeroMotion();
+
+  window.addEventListener("pageshow", () => {
+    restartHeroMotion();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) restartHeroMotion();
+  });
 
   window.addEventListener("load", () => {
     setTimeout(() => el.pageLoader.classList.add("hidden"), 450);

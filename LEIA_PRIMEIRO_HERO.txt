@@ -1,0 +1,16 @@
+SC CENTRAL V6 FINAL — CORREÇÃO DA HERO
+
+Correções:
+- elimina CSS/JS antigo preso no cache da PWA;
+- versiona os assets da loja;
+- hero entra sem depender do timing do IntersectionObserver;
+- reinicia animações ao voltar para a aba/página;
+- reforça movimento do card principal, cards flutuantes, grid, halo e ticker;
+- mantém suporte a prefers-reduced-motion.
+
+Aplicação:
+1. Extraia este ZIP dentro da pasta local do repositório SC Central.
+2. Aceite substituir os arquivos.
+3. Execute CORRIGIR_ANIMACAO_HERO.bat.
+4. Aguarde o redeploy do Railway.
+5. Abra o site e pressione Ctrl+F5 uma vez.

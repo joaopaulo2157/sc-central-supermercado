@@ -147,6 +147,12 @@ img { max-width: 100%; display: block; }
   content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%;
   border: 1px solid rgba(255,255,255,.14); right: 2%; top: -180px;
   box-shadow: 0 0 0 70px rgba(255,255,255,.03), 0 0 0 140px rgba(255,255,255,.02);
+  animation: heroHaloFloat 9s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+@keyframes heroHaloFloat {
+  from { transform: translate3d(0,0,0) scale(1); opacity: .82; }
+  to { transform: translate3d(-34px,44px,0) scale(1.08); opacity: 1; }
 }
 .hero__grid-overlay {
   position: absolute; inset: 0; opacity: .12;
@@ -155,6 +161,12 @@ img { max-width: 100%; display: block; }
     linear-gradient(90deg, rgba(255,255,255,.28) 1px, transparent 1px);
   background-size: 44px 44px;
   mask-image: linear-gradient(to bottom, #000, transparent 82%);
+  animation: heroGridDrift 18s linear infinite;
+  will-change: background-position;
+}
+@keyframes heroGridDrift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 44px 44px, 44px 44px; }
 }
 .hero__content {
   position: relative; min-height: 610px;
@@ -193,7 +205,12 @@ img { max-width: 100%; display: block; }
 .hero__stats strong { font: 800 28px Montserrat, sans-serif; }
 .hero__stats span { color: #cbd9f5; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
 
-.hero__visual { position: relative; min-height: 430px; }
+.hero__visual {
+  position: relative;
+  min-height: 430px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
 .hero-card {
   position: absolute; inset: 50px 20px auto 30px; min-height: 290px;
   border: 1px solid rgba(255,255,255,.25);
@@ -201,6 +218,8 @@ img { max-width: 100%; display: block; }
   border-radius: 32px; backdrop-filter: blur(18px); box-shadow: 0 30px 70px rgba(0,19,73,.35);
   transform: perspective(900px) rotateY(-7deg) rotateX(4deg);
   animation: cardFloat 4.8s ease-in-out infinite alternate;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 @keyframes cardFloat { to { transform: perspective(900px) rotateY(-3deg) rotateX(1deg) translateY(-10px); } }
 .hero-card__badge {
@@ -219,6 +238,8 @@ img { max-width: 100%; display: block; }
   position: absolute; z-index: 2; min-width: 205px; display: flex; gap: 12px; align-items: center;
   background: #fff; color: var(--gray-800); border-radius: 18px; padding: 13px 15px;
   box-shadow: 0 18px 42px rgba(4,27,76,.22); animation: floatCard 4s ease-in-out infinite alternate;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .floating-card span { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; background: var(--blue-3); font-size: 22px; }
 .floating-card div { display: grid; }
@@ -230,7 +251,11 @@ img { max-width: 100%; display: block; }
 @keyframes floatCard { to { transform: translateY(-12px) rotate(1deg); } }
 
 .hero__ticker { position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,.16); background: rgba(1,31,92,.35); }
-.ticker-track { width: max-content; min-height: 46px; display: flex; gap: 26px; align-items: center; animation: ticker 26s linear infinite; }
+.ticker-track {
+  width: max-content; min-height: 46px; display: flex; gap: 26px; align-items: center;
+  animation: ticker 26s linear infinite;
+  will-change: transform;
+}
 .ticker-track span { font: 800 12px Montserrat, sans-serif; letter-spacing: .12em; color: #e5eeff; }
 .ticker-track i { color: #7fb0ff; }
 @keyframes ticker { to { transform: translateX(-50%); } }
@@ -562,7 +587,16 @@ img { max-width: 100%; display: block; }
   .phone { width: 275px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+  .hero .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ==========================================================
