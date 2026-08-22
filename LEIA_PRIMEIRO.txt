@@ -1,12 +1,24 @@
-SC CENTRAL V6 FINAL — RAILWAY CONFIGURADO
+CORREÇÃO DO PUBLICADOR SUPABASE
 
-1. Extraia este ZIP dentro da pasta local do repositório.
-2. Aceite substituir arquivos.
-3. Execute CONFIGURAR_RAILWAY.bat.
-4. Depois abra o Railway e conecte o repositório GitHub.
-5. Cadastre SC_ADMIN_PASSWORD.
-6. Adicione um Volume com Mount Path /app/storage.
-7. Gere o domínio em Settings > Networking.
+O erro:
+  cannot pull with rebase: You have unstaged changes
 
-O arquivo railway.json já configura Dockerfile, health check e restart.
-A aplicação detecta automaticamente o mount path do Railway Volume.
+acontecia porque havia alterações locais rastreadas que o script anterior
+não adicionava ao commit.
+
+ESTE SCRIPT:
+- executa npm run check;
+- verifica se .env real está sendo rastreado e bloqueia por segurança;
+- adiciona todas as modificações de arquivos já rastreados (git add -u);
+- adiciona somente os novos arquivos conhecidos da integração Supabase;
+- NÃO adiciona arquivos aleatórios não rastreados;
+- cria commit;
+- executa git pull --rebase origin main;
+- executa git push origin main;
+- nunca usa force push;
+- nunca apaga alterações locais.
+
+COMO USAR:
+1. Copie CONECTAR_SUPABASE.bat para a raiz do repositório SC Central.
+2. Substitua o arquivo anterior.
+3. Execute-o novamente.
