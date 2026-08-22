@@ -115,7 +115,15 @@
       e.userRole.textContent=roleLabel(state.user.role);
       e.userInitial.textContent=(state.user.name||'U').trim().charAt(0).toUpperCase();
       applyPermissions();
-    } catch { return false; }
+    } catch (error) {
+      console.error('[SC Central Admin] Falha ao inicializar autenticação/permissões:', error);
+      if (e.loading) {
+        const text=e.loading.querySelector('strong');
+        if(text) text.textContent='Não foi possível iniciar o painel. Atualize a página.';
+        setTimeout(()=>e.loading?.classList.add('hidden'),5000);
+      }
+      return false;
+    }
     return true;
   }
 
@@ -123,11 +131,11 @@
     const role=canonicalRole(state.user?.role);
     document.body.dataset.adminRole=role;
 
-    $('.admin-nav button[data-tab]').forEach(node => {
+    $$$('.admin-nav button[data-tab]').forEach(node => {
       node.style.display=canTab(node.dataset.tab)?'':'none';
     });
 
-    $('[data-min-role]').forEach(node => {
+    $$$('[data-min-role]').forEach(node => {
       if (node.dataset.tab) return;
       const allowed=can(node.dataset.minRole);
       node.style.display=allowed?'':'none';
