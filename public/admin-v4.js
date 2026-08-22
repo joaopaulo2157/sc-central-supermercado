@@ -347,7 +347,7 @@
   }
 
   window.addEventListener('resize',()=>{
-    if(window.innerWidth>900){
+    if(window.innerWidth>1100){
       e.sidebar.classList.remove('open');
       e.sidebarOverlay?.classList.remove('active');
       e.menu?.setAttribute('aria-expanded','false');
