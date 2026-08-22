@@ -38,17 +38,19 @@ jobs:
         run: |
           NODE_NO_WARNINGS=1 node server.js > server.log 2>&1 &
           echo $! > server.pid
+
           for i in {1..20}; do
-            if curl --fail --silent http://127.0.0.1:3000/api/health > /dev/null; then
+            if curl --fail --silent http://127.0.0.1:3000/api/live > /dev/null; then
               exit 0
             fi
             sleep 1
           done
+
           cat server.log
           exit 1
 
-      - name: Testar API de saúde
-        run: curl --fail --show-error http://127.0.0.1:3000/api/health
+      - name: Testar liveness da API
+        run: curl --fail --show-error http://127.0.0.1:3000/api/live
 
       - name: Encerrar servidor
         if: always()
