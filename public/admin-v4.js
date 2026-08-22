@@ -301,7 +301,7 @@
 
   function openChangePassword(){openModal('Alterar minha senha','SEGURANÇA',`<form class="modal-form-v4" id="passwordForm"><label class="full"><span>Senha atual</span><input name="currentPassword" type="password" required></label><label class="full"><span>Nova senha</span><input name="newPassword" type="password" minlength="8" required></label><label class="full"><span>Confirmar nova senha</span><input name="confirmPassword" type="password" minlength="8" required></label><div class="modal-actions-v4"><button type="button" class="btn-secondary" data-close-modal>Cancelar</button><button type="submit" class="btn-primary">Alterar senha</button></div></form>`);$('#passwordForm').addEventListener('submit',async ev=>{ev.preventDefault();const fd=new FormData(ev.currentTarget);if(fd.get('newPassword')!==fd.get('confirmPassword'))return toast('As senhas não conferem.');await api('/api/auth/change-password',{method:'POST',body:JSON.stringify({currentPassword:fd.get('currentPassword'),newPassword:fd.get('newPassword')})});alert('Senha alterada. Faça login novamente.');location.href='login.html';});}
 
-  async function exportBackup(){const data=await api('/api/admin/export');const blob=new Blob([JSON.stringify(data.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`sc-central-v4-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup exportado.');}
+  async function exportBackup(){const data=await api('/api/admin/export');const blob=new Blob([JSON.stringify(data.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`sc-central-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup exportado.');}
 
   function bindEvents(){
     $$('.admin-nav button[data-tab]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
@@ -324,7 +324,7 @@
     document.addEventListener('click',ev=>{if(!ev.target.closest('.user-menu-wrap'))e.userMenu.classList.remove('open');});
     $('#logoutBtn').addEventListener('click',async()=>{await api('/api/auth/logout',{method:'POST',body:'{}'});location.href='login.html';});
     $('#changePasswordBtn').addEventListener('click',openChangePassword);
-    $('#refreshBtn').addEventListener('click',async()=>{await loadBootstrap();await renderTab(state.activeTab);toast('Dados sincronizados.');});
+    $('#refreshBtn').addEventListener('click',async()=>{await loadBootstrap();await renderTab(state.activeTab);toast('Dados atualizados.');});
     $('#exportBtn').addEventListener('click',exportBackup);
     $('#quickAddProduct').addEventListener('click',()=>openProduct()); $('#addProductBtn').addEventListener('click',()=>openProduct());
     e.productSearch.addEventListener('input',renderProducts);e.productCategoryFilter.addEventListener('change',renderProducts);e.productStatusFilter.addEventListener('change',renderProducts);
