@@ -19,7 +19,86 @@ const IS_SECURE = process.env.SC_HTTPS === '1' || Boolean(process.env.RAILWAY_EN
 const SESSION_HOURS = Number(process.env.SC_SESSION_HOURS || 8);
 const JSON_LIMIT = 3 * 1024 * 1024;
 
-const ROLE_LEVEL = { attendant: 1, manager: 2, admin: 3 };
+// SC_RBAC_V2
+const ROLE_LEVEL = {
+  attendant: 1,       // legado -> cadastrador
+  cadastrador: 1,
+  manager: 1,         // legado; a autorização fina é feita abaixo
+  editor: 2,
+  admin: 3
+};
+
+const ROLE_ALIASES = {
+  attendant: 'cadastrador',
+  manager: 'editor'
+};
+
+const ROLE_PERMISSIONS = {
+  admin: new Set(['*']),
+  editor: new Set([
+    'panel.bootstrap',
+    'dashboard.view',
+    'catalog.view',
+    'catalog.write',
+    'catalog.deactivate',
+    'category.manage',
+    'content.manage',
+    'promo.manage',
+    'delivery.manage',
+    'orders.manage',
+    'customers.view',
+    'reports.view'
+  ]),
+  cadastrador: new Set([
+    'panel.bootstrap',
+    'catalog.view',
+    'catalog.write'
+  ])
+};
+
+function canonicalRole(role) {
+  const value = String(role || '').toLowerCase();
+  return ROLE_ALIASES[value] || value;
+}
+
+function hasAdminPermission(user, permission) {
+  const role = canonicalRole(user?.role);
+  const permissions = ROLE_PERMISSIONS[role];
+  return Boolean(permissions && (permissions.has('*') || permissions.has(permission)));
+}
+
+function adminPermissionFor(method, pathname) {
+  if (pathname === '/api/admin/bootstrap') return 'panel.bootstrap';
+  if (pathname === '/api/admin/dashboard') return 'dashboard.view';
+
+  if (pathname === '/api/admin/products/import') return 'catalog.write';
+  if (pathname === '/api/admin/uploads/image') return 'catalog.write';
+
+  if (/^\/api\/admin\/products(?:\/\d+)?$/.test(pathname)) {
+    if (method === 'DELETE') return 'catalog.deactivate';
+    if (method === 'GET') return 'catalog.view';
+    return 'catalog.write';
+  }
+
+  if (/^\/api\/admin\/categories(?:\/\d+)?$/.test(pathname)) {
+    return method === 'GET' ? 'catalog.view' : 'category.manage';
+  }
+
+  if (pathname.startsWith('/api/admin/banners')) return 'content.manage';
+  if (pathname.startsWith('/api/admin/coupons')) return 'promo.manage';
+  if (pathname.startsWith('/api/admin/regions')) return 'delivery.manage';
+  if (pathname.startsWith('/api/admin/orders')) return 'orders.manage';
+  if (pathname.startsWith('/api/admin/customers')) return 'customers.view';
+  if (pathname.startsWith('/api/admin/reports')) return 'reports.view';
+
+  if (pathname.startsWith('/api/admin/users')) return 'users.manage';
+  if (pathname.startsWith('/api/admin/audit')) return 'audit.view';
+  if (pathname.startsWith('/api/admin/settings')) return 'settings.manage';
+  if (pathname.startsWith('/api/admin/export')) return 'export.full';
+  if (pathname.startsWith('/api/admin/storage')) return 'storage.manage';
+
+  return 'admin.only';
+}
 const ORDER_STATUSES = [
   'novo','confirmado','separando','pronto',
   'saiu_entrega','concluido','cancelado'
@@ -310,7 +389,7 @@ async function currentUser(req) {
     id: Number(user.id),
     name: user.name,
     username: user.username,
-    role: user.role
+    role: canonicalRole(user.role)
   };
 }
 
@@ -1138,7 +1217,7 @@ async function handleApi(req, res, url) {
           id: Number(user.id),
           name: user.name,
           username: user.username,
-          role: user.role
+          role: canonicalRole(user.role)
         }
       },
       {
@@ -1343,19 +1422,22 @@ async function handleApi(req, res, url) {
   }
 
   if (pathname.startsWith('/api/admin/')) {
-    const minRole =
-      pathname.startsWith('/api/admin/users') ||
-      pathname === '/api/admin/settings'
-        ? 'admin'
-        : 'attendant';
-
     const user = await requireAuth(
       req,
       res,
-      minRole
+      'attendant'
     );
 
     if (!user) return;
+
+    const permission = adminPermissionFor(method, pathname);
+    if (!hasAdminPermission(user, permission)) {
+      return sendJson(res, 403, {
+        ok: false,
+        error: 'Seu nível de acesso não permite esta ação.',
+        code: 'ADMIN_PERMISSION_DENIED'
+      });
+    }
 
     if (
       method === 'GET' &&
@@ -1528,7 +1610,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -1606,7 +1688,7 @@ async function handleApi(req, res, url) {
     if (productMatch && method === 'PUT') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -1747,7 +1829,7 @@ async function handleApi(req, res, url) {
     if (productMatch && method === 'DELETE') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -1793,7 +1875,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -1818,7 +1900,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -1893,7 +1975,7 @@ async function handleApi(req, res, url) {
     if (categoryMatch && method === 'PUT') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -1969,7 +2051,7 @@ async function handleApi(req, res, url) {
     if (categoryMatch && method === 'DELETE') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2001,7 +2083,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2070,7 +2152,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2294,7 +2376,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2523,7 +2605,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2608,7 +2690,7 @@ async function handleApi(req, res, url) {
     if (bannerMatch && method === 'PUT') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2701,7 +2783,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2754,7 +2836,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2832,7 +2914,7 @@ async function handleApi(req, res, url) {
     if (couponMatch && method === 'PUT') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2903,7 +2985,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -2954,7 +3036,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -3008,7 +3090,7 @@ async function handleApi(req, res, url) {
     if (regionMatch && method === 'PUT') {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -3072,7 +3154,7 @@ async function handleApi(req, res, url) {
     ) {
       if (
         (ROLE_LEVEL[user.role] || 0) <
-        ROLE_LEVEL.manager
+        ROLE_LEVEL.cadastrador
       ) {
         return sendJson(res, 403, {
           ok: false,
@@ -3328,11 +3410,11 @@ async function handleApi(req, res, url) {
 
       const role = [
         'admin',
-        'manager',
-        'attendant'
+        'editor',
+        'cadastrador'
       ].includes(b.role)
         ? b.role
-        : 'attendant';
+        : 'cadastrador';
 
       const { salt, hash } =
         hashPassword(password);
@@ -3412,11 +3494,11 @@ async function handleApi(req, res, url) {
 
       const role = [
         'admin',
-        'manager',
-        'attendant'
+        'editor',
+        'cadastrador'
       ].includes(b.role)
         ? b.role
-        : current.role;
+        : canonicalRole(current.role);
 
       const changes = {
         name: safeText(

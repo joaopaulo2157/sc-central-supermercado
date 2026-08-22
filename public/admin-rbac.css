@@ -1,0 +1,226 @@
+/* ==========================================================
+   SC CENTRAL — RBAC + CORREÇÃO FINAL DO DASHBOARD RESPONSIVO
+   Carregar por último.
+   ========================================================== */
+
+body.admin-rbac-ready {
+  --rbac-admin:#0758ff;
+  --rbac-editor:#6d4aff;
+  --rbac-cadastrador:#0f9f6e;
+}
+
+/* ==========================================================
+   STATUS DA OPERAÇÃO
+   O grid agora reage à largura REAL do painel.
+   ========================================================== */
+
+body.admin-rbac-ready .dashboard-grid--v4 {
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 16px !important;
+}
+
+body.admin-rbac-ready .dashboard-grid--v4 > .panel {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+body.admin-rbac-ready .dashboard-grid--v4 > .panel.admin-tech-hidden {
+  display: block !important;
+  visibility: visible !important;
+}
+
+body.admin-rbac-ready .health-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  gap: 12px !important;
+}
+
+body.admin-rbac-ready .health-item {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 118px !important;
+  padding: 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  align-content: center !important;
+  align-items: start !important;
+  justify-items: start !important;
+  gap: 12px !important;
+}
+
+body.admin-rbac-ready .health-item > div {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+body.admin-rbac-ready .health-item strong,
+body.admin-rbac-ready .health-item small,
+body.admin-rbac-ready .health-item b {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+}
+
+body.admin-rbac-ready .health-item strong {
+  display: block !important;
+  white-space: normal !important;
+  line-height: 1.25 !important;
+}
+
+body.admin-rbac-ready .health-item small {
+  display: block !important;
+  margin-top: 5px !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
+}
+
+body.admin-rbac-ready .health-item > b {
+  justify-self: start !important;
+  width: max-content !important;
+  white-space: nowrap !important;
+}
+
+/* ==========================================================
+   RBAC — elementos que não pertencem ao perfil.
+   JS também remove visualmente; CSS é uma segunda camada.
+   ========================================================== */
+
+body[data-admin-role="cadastrador"] [data-tab="dashboard"],
+body[data-admin-role="cadastrador"] [data-tab="banners"],
+body[data-admin-role="cadastrador"] [data-tab="coupons"],
+body[data-admin-role="cadastrador"] [data-tab="delivery"],
+body[data-admin-role="cadastrador"] [data-tab="orders"],
+body[data-admin-role="cadastrador"] [data-tab="customers"],
+body[data-admin-role="cadastrador"] [data-tab="reports"],
+body[data-admin-role="cadastrador"] [data-tab="users"],
+body[data-admin-role="cadastrador"] [data-tab="audit"],
+body[data-admin-role="cadastrador"] [data-tab="settings"],
+body[data-admin-role="cadastrador"] #exportBtn,
+body[data-admin-role="cadastrador"] [data-delete-product],
+body[data-admin-role="cadastrador"] #v6AddCategoryBtn,
+body[data-admin-role="cadastrador"] [data-v6-edit-category],
+body[data-admin-role="cadastrador"] [data-v6-disable-category] {
+  display: none !important;
+}
+
+body[data-admin-role="editor"] [data-tab="users"],
+body[data-admin-role="editor"] [data-tab="audit"],
+body[data-admin-role="editor"] [data-tab="settings"],
+body[data-admin-role="editor"] #exportBtn {
+  display: none !important;
+}
+
+/* ==========================================================
+   MATRIZ DE ACESSO
+   ========================================================== */
+
+.rbac-access-matrix {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:0 0 20px;
+}
+
+.rbac-access-card {
+  min-width:0;
+  border:1px solid var(--line,#e3e9f2);
+  border-radius:18px;
+  background:#fff;
+  padding:16px;
+  box-shadow:0 8px 26px rgba(25,52,92,.05);
+}
+
+.rbac-access-card__head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.rbac-access-card__head strong {
+  font-size:13px;
+}
+
+.rbac-access-card__badge {
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:0 9px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.rbac-access-card.admin .rbac-access-card__badge {
+  color:#0647cc;
+  background:#edf3ff;
+}
+
+.rbac-access-card.editor .rbac-access-card__badge {
+  color:#5834c7;
+  background:#f2eeff;
+}
+
+.rbac-access-card.cadastrador .rbac-access-card__badge {
+  color:#087552;
+  background:#e9fbf4;
+}
+
+.rbac-access-card p {
+  margin:0;
+  color:var(--muted,#748095);
+  font-size:10px;
+  line-height:1.6;
+}
+
+.rbac-role-help {
+  display:block;
+  grid-column:1/-1;
+  margin:-3px 0 4px;
+  padding:10px 12px;
+  border-radius:11px;
+  background:#f6f8fc;
+  color:#65738a;
+  font-size:9px;
+  line-height:1.55;
+}
+
+.role-pill.editor {
+  color:#5834c7 !important;
+  background:#f2eeff !important;
+}
+
+.role-pill.cadastrador {
+  color:#087552 !important;
+  background:#e9fbf4 !important;
+}
+
+/* ==========================================================
+   RESPONSIVIDADE DA MATRIZ E DASHBOARD
+   ========================================================== */
+
+@media (max-width: 1050px) {
+  .rbac-access-matrix {
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  body.admin-rbac-ready .health-grid {
+    grid-template-columns:1fr !important;
+  }
+
+  body.admin-rbac-ready .health-item {
+    min-height:0 !important;
+  }
+}

@@ -4,7 +4,13 @@
 // ==========================================================
 
 (() => {
-  const ROLE_LEVEL = { attendant:1, manager:2, admin:3 };
+  const ROLE_LEVEL = {
+    attendant:1,
+    cadastrador:1,
+    manager:1,
+    editor:2,
+    admin:3
+  };
   const STATUS_LABEL = {
     novo:'Novo', confirmado:'Confirmado', separando:'Em separação', pronto:'Pronto',
     saiu_entrega:'Saiu para entrega', concluido:'Concluído', cancelado:'Cancelado'
@@ -44,8 +50,20 @@
   }
   function money(value) { return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(value||0)); }
   function dt(value) { try { return new Date(value).toLocaleString('pt-BR'); } catch { return value || ''; } }
-  function roleLabel(role) { return ({admin:'Administrador',manager:'Gerente',attendant:'Atendente'})[role] || role; }
+  function canonicalRole(role) {
+    return ({manager:'editor',attendant:'cadastrador'})[String(role||'').toLowerCase()] || String(role||'').toLowerCase();
+  }
+  const TAB_ACCESS = {
+    admin:new Set(['dashboard','products','categories','import','banners','coupons','delivery','orders','customers','reports','users','audit','settings']),
+    editor:new Set(['dashboard','products','categories','import','banners','coupons','delivery','orders','customers','reports']),
+    cadastrador:new Set(['products','categories','import'])
+  };
+  function roleLabel(role) { return ({admin:'Administrador',editor:'Editor',cadastrador:'Cadastrador',manager:'Editor',attendant:'Cadastrador'})[role] || role; }
   function can(role) { return (ROLE_LEVEL[state.user?.role]||0) >= (ROLE_LEVEL[role]||0); }
+  function canTab(tab) {
+    const role=canonicalRole(state.user?.role);
+    return Boolean(TAB_ACCESS[role]?.has(tab));
+  }
 
   function toast(text) {
     e.toast.textContent = text;
@@ -102,10 +120,21 @@
   }
 
   function applyPermissions() {
-    $$('[data-min-role]').forEach(node => {
+    const role=canonicalRole(state.user?.role);
+    document.body.dataset.adminRole=role;
+
+    $('.admin-nav button[data-tab]').forEach(node => {
+      node.style.display=canTab(node.dataset.tab)?'':'none';
+    });
+
+    $('[data-min-role]').forEach(node => {
+      if (node.dataset.tab) return;
       const allowed=can(node.dataset.minRole);
       node.style.display=allowed?'':'none';
     });
+
+    const exportBtn=$('#exportBtn');
+    if(exportBtn) exportBtn.style.display=role==='admin'?'':'none';
   }
 
   async function loadBootstrap() {
@@ -123,7 +152,7 @@
 
   function switchTab(tab) {
     const button=$(`[data-tab="${tab}"]`);
-    if (!button || button.style.display === 'none') tab='dashboard';
+    if (!button || button.style.display === 'none' || !canTab(tab)) tab=canonicalRole(state.user?.role)==='cadastrador'?'products':'dashboard';
     state.activeTab=tab;
     $$('.admin-nav button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
     $$('.admin-tab').forEach(node=>node.classList.toggle('active',node.id===`tab-${tab}`));
@@ -292,7 +321,22 @@
   }
 
   async function loadUsers(){const data=await api('/api/admin/users');state.users=data.users;e.usersGrid.innerHTML=state.users.map(u=>`<article class="user-card-v4"><div class="user-card-v4__head"><div class="user-card-v4__avatar">${esc(u.name.charAt(0).toUpperCase())}</div><div><strong>${esc(u.name)}</strong><small>@${esc(u.username)} • ${u.active?'ativo':'inativo'}</small></div></div><span class="role-pill ${u.role}">${roleLabel(u.role)}</span><div class="user-card-v4__actions"><button data-edit-user="${u.id}">Editar</button><button data-disable-user="${u.id}">${u.active?'Desativar':'Inativo'}</button></div></article>`).join('')||'<p>Nenhum usuário.</p>';}
-  function userForm(u={}){return `<form class="modal-form-v4" id="userForm"><label class="full"><span>Nome</span><input name="name" required value="${esc(u.name||'')}"></label><label><span>Usuário</span><input name="username" required value="${esc(u.username||'')}"></label><label><span>Nível de acesso</span><select name="role"><option value="attendant" ${u.role==='attendant'?'selected':''}>Atendente</option><option value="manager" ${u.role==='manager'?'selected':''}>Gerente</option><option value="admin" ${u.role==='admin'?'selected':''}>Administrador</option></select></label><label class="full"><span>${u.id?'Nova senha (deixe vazio para manter)':'Senha inicial'}</span><input name="password" type="password" ${u.id?'':'required'} minlength="8"></label><label class="modal-check"><input type="checkbox" name="active" ${u.active===false?'':'checked'}><span>Usuário ativo</span></label><div class="modal-actions-v4"><button type="button" class="btn-secondary" data-close-modal>Cancelar</button><button type="submit" class="btn-primary">Salvar usuário</button></div></form>`;}
+  function userForm(u={}){
+    const currentRole=canonicalRole(u.role||'cadastrador');
+    return `<form class="modal-form-v4" id="userForm">
+      <label class="full"><span>Nome</span><input name="name" required value="${esc(u.name||'')}"></label>
+      <label><span>Usuário</span><input name="username" required value="${esc(u.username||'')}"></label>
+      <label><span>Nível de acesso</span><select name="role">
+        <option value="cadastrador" ${currentRole==='cadastrador'?'selected':''}>Cadastrador — somente catálogo</option>
+        <option value="editor" ${currentRole==='editor'?'selected':''}>Editor — operação comercial</option>
+        <option value="admin" ${currentRole==='admin'?'selected':''}>Administrador — acesso total</option>
+      </select></label>
+      <small class="rbac-role-help">Cadastrador: produtos/importação. Editor: operação comercial. Administrador: acesso total.</small>
+      <label class="full"><span>${u.id?'Nova senha (deixe vazio para manter)':'Senha inicial'}</span><input name="password" type="password" ${u.id?'':'required'} minlength="8"></label>
+      <label class="modal-check"><input type="checkbox" name="active" ${u.active===false?'':'checked'}><span>Usuário ativo</span></label>
+      <div class="modal-actions-v4"><button type="button" class="btn-secondary" data-close-modal>Cancelar</button><button type="submit" class="btn-primary">Salvar usuário</button></div>
+    </form>`;
+  }
   function openUser(id=null){const u=id?state.users.find(x=>x.id===Number(id)):null;openModal(u?'Editar usuário':'Novo usuário','ACESSO',userForm(u||{}));$('#userForm').addEventListener('submit',async ev=>{ev.preventDefault();const fd=new FormData(ev.currentTarget);const payload={name:fd.get('name'),username:fd.get('username'),role:fd.get('role'),password:fd.get('password'),active:fd.get('active')==='on'};await api(id?`/api/admin/users/${id}`:'/api/admin/users',{method:id?'PUT':'POST',body:JSON.stringify(payload)});toast('Usuário salvo.');closeModal();await loadUsers();});}
 
   async function loadAudit(){const data=await api('/api/admin/audit');state.audit=data.logs;e.auditList.innerHTML=state.audit.map(log=>`<div class="audit-row"><strong>${esc(log.userName)}<br><small>@${esc(log.username||'sistema')}</small></strong><span class="audit-action">${ACTION_LABEL[log.action]||esc(log.action)}</span><span>${esc(log.entityType)} ${esc(log.entityId)}${log.details?` • ${esc(log.details)}`:''}</span><small>${dt(log.createdAt)}</small></div>`).join('')||'<p>Nenhum registro.</p>';}
@@ -360,7 +404,11 @@
     bindEvents();
     try{
       await loadBootstrap();
-      await renderDashboard();
+      if(canonicalRole(state.user?.role)==='cadastrador'){
+        switchTab('products');
+      }else{
+        await renderDashboard();
+      }
       e.serverStatus.classList.add('online');
       document.body.classList.remove('admin-v4-loading');
       e.loading.classList.add('hidden');
