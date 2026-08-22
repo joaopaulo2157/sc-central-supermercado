@@ -1,0 +1,521 @@
+/* ==========================================================
+   SC CENTRAL — PAINEL ADMINISTRATIVO RESPONSIVO/CROSS-BROWSER
+   Camada final de compatibilidade. Carregar APÓS admin-clean.css.
+   ========================================================== */
+
+:root {
+  --admin-sidebar-width: 270px;
+  --admin-mobile-breakpoint: 1100px;
+}
+
+html {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.admin-compat {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ---------- Estrutura desktop ----------
+   A sidebar fica independente do grid. Isso evita o corte vertical
+   observado em alguns navegadores e em zoom/escala diferentes.
+*/
+body.admin-compat .admin-shell {
+  display: block !important;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+body.admin-compat .admin-sidebar {
+  position: fixed !important;
+  z-index: 1200 !important;
+  inset: 0 auto 0 0 !important;
+  width: var(--admin-sidebar-width) !important;
+  min-width: var(--admin-sidebar-width) !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  padding: 16px 14px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #0e1728 !important;
+  color: #fff !important;
+  box-shadow: 8px 0 30px rgba(4, 12, 27, .08);
+  transform: translateX(0);
+  will-change: transform;
+  isolation: isolate;
+}
+
+body.admin-compat .admin-brand,
+body.admin-compat .server-status,
+body.admin-compat .admin-sidebar__footer {
+  flex: 0 0 auto;
+}
+
+body.admin-compat .admin-nav {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 2px 2px 8px 0 !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.25) transparent;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.admin-compat .admin-nav::-webkit-scrollbar {
+  width: 5px;
+}
+
+body.admin-compat .admin-nav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.22);
+  border-radius: 999px;
+}
+
+body.admin-compat .admin-nav button {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  white-space: normal !important;
+}
+
+body.admin-compat .admin-nav button span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+body.admin-compat .admin-sidebar__footer {
+  margin-top: 0 !important;
+  background: #0e1728 !important;
+}
+
+body.admin-compat .admin-main {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin-left: var(--admin-sidebar-width) !important;
+}
+
+body.admin-compat .admin-topbar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  z-index: 900;
+}
+
+body.admin-compat .admin-content,
+body.admin-compat .admin-tab,
+body.admin-compat .panel,
+body.admin-compat .table-card,
+body.admin-compat .toolbar,
+body.admin-compat .tab-header,
+body.admin-compat .panel-heading,
+body.admin-compat .dashboard-grid,
+body.admin-compat .kpi-grid,
+body.admin-compat .health-grid,
+body.admin-compat .status-overview {
+  min-width: 0 !important;
+  max-width: 100%;
+}
+
+body.admin-compat .admin-content {
+  width: 100% !important;
+  max-width: 1600px !important;
+  margin: 0 auto !important;
+}
+
+/* ---------- Dashboard ---------- */
+body.admin-compat .dashboard-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+body.admin-compat .dashboard-grid > * {
+  min-width: 0 !important;
+}
+
+body.admin-compat .dashboard-grid--v4 {
+  margin-top: 18px;
+}
+
+/* admin-clean.js antigo marcava o painel de saúde como técnico.
+   Neste layout ele volta a ser mostrado, mas em formato legível. */
+body.admin-compat .dashboard-grid--v4 > .panel.admin-tech-hidden {
+  display: block !important;
+  visibility: visible !important;
+}
+
+body.admin-compat .health-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+body.admin-compat .health-item {
+  min-width: 0 !important;
+  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 14px 12px !important;
+}
+
+body.admin-compat .health-item > div {
+  flex: 1 1 auto;
+  min-width: 0 !important;
+}
+
+body.admin-compat .health-item strong,
+body.admin-compat .health-item small {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+body.admin-compat .health-item small {
+  line-height: 1.4 !important;
+}
+
+body.admin-compat .health-item > b {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* ---------- Grids e cards ---------- */
+body.admin-compat .kpi-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+body.admin-compat .banner-admin-grid,
+body.admin-compat .coupon-admin-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+body.admin-compat .v6-category-admin-grid,
+body.admin-compat .v6-customers-grid,
+body.admin-compat .users-grid,
+body.admin-compat .v6-report-grid,
+body.admin-compat .v6-import-grid {
+  min-width: 0 !important;
+}
+
+body.admin-compat .kpi-card,
+body.admin-compat .banner-admin-card,
+body.admin-compat .coupon-card,
+body.admin-compat .v6-category-card,
+body.admin-compat .v6-customer-card,
+body.admin-compat .user-card-v4,
+body.admin-compat .order-card,
+body.admin-compat .order-card-v4 {
+  min-width: 0 !important;
+  max-width: 100%;
+}
+
+/* ---------- Cabeçalho ---------- */
+body.admin-compat .admin-topbar > *,
+body.admin-compat .admin-topbar__actions,
+body.admin-compat .admin-topbar__actions > *,
+body.admin-compat .user-menu-wrap {
+  min-width: 0;
+}
+
+body.admin-compat .admin-topbar__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+/* ---------- Formulários ---------- */
+body.admin-compat input,
+body.admin-compat select,
+body.admin-compat textarea,
+body.admin-compat button {
+  max-width: 100%;
+}
+
+body.admin-compat input,
+body.admin-compat select,
+body.admin-compat textarea {
+  min-width: 0;
+}
+
+body.admin-compat .settings-form,
+body.admin-compat .modal-form,
+body.admin-compat .modal-form-v4,
+body.admin-compat .modal-form-v6 {
+  min-width: 0 !important;
+}
+
+/* ---------- Tabelas ---------- */
+body.admin-compat .table-card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden !important;
+}
+
+body.admin-compat .data-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+}
+
+body.admin-compat .data-table {
+  width: 100%;
+  min-width: 820px;
+}
+
+/* ---------- Overlay do menu ----------
+   Usa apenas o overlay que já existe em admin.html/admin-v4.js.
+*/
+body.admin-compat .admin-mobile-nav-overlay {
+  display: none !important;
+}
+
+body.admin-compat .admin-sidebar-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1150 !important;
+  background: rgba(4, 12, 27, .58) !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .22s ease, visibility .22s ease;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+body.admin-compat .admin-sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ---------- Compatibilidade sem backdrop-filter ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  body.admin-compat .admin-topbar {
+    background: rgba(255,255,255,.98) !important;
+  }
+  body.admin-compat .admin-sidebar-overlay {
+    background: rgba(4,12,27,.72) !important;
+  }
+}
+
+/* ---------- Notebook / tablet ---------- */
+@media (max-width: 1280px) {
+  body.admin-compat .health-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.admin-compat .health-item {
+    min-height: 72px;
+  }
+
+  body.admin-compat .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  body.admin-compat .admin-sidebar {
+    width: min(320px, 88vw) !important;
+    min-width: 0 !important;
+    transform: translateX(-105%);
+    box-shadow: 24px 0 60px rgba(0,0,0,.22);
+  }
+
+  body.admin-compat .admin-sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  body.admin-compat .admin-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  body.admin-compat .admin-menu {
+    display: grid !important;
+    place-items: center;
+    flex: 0 0 44px;
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  body.admin-compat .dashboard-grid,
+  body.admin-compat .v6-report-grid,
+  body.admin-compat .v6-import-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.admin-compat .banner-admin-grid,
+  body.admin-compat .coupon-admin-grid,
+  body.admin-compat .v6-category-admin-grid,
+  body.admin-compat .v6-customers-grid,
+  body.admin-compat .users-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.admin-compat.sidebar-open,
+  body.admin-compat.admin-nav-open {
+    overflow: hidden !important;
+  }
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 760px) {
+  body.admin-compat .admin-topbar {
+    min-height: 68px !important;
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+
+  body.admin-compat .admin-topbar > div:first-child {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  body.admin-compat .admin-topbar h1 {
+    max-width: 42vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body.admin-compat #refreshBtn,
+  body.admin-compat #exportBtn {
+    display: none !important;
+  }
+
+  body.admin-compat .admin-content {
+    padding: 14px 12px 24px !important;
+  }
+
+  body.admin-compat .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  body.admin-compat .banner-admin-grid,
+  body.admin-compat .coupon-admin-grid,
+  body.admin-compat .v6-category-admin-grid,
+  body.admin-compat .v6-customers-grid,
+  body.admin-compat .users-grid,
+  body.admin-compat .v6-report-grid,
+  body.admin-compat .v6-import-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.admin-compat .toolbar,
+  body.admin-compat .orders-toolbar {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  body.admin-compat .toolbar-search,
+  body.admin-compat .orders-toolbar > * {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  body.admin-compat .toolbar > select,
+  body.admin-compat .toolbar > button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body.admin-compat .tab-header,
+  body.admin-compat .panel-heading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body.admin-compat .tab-header > button,
+  body.admin-compat .tab-header > select {
+    width: 100%;
+  }
+
+  body.admin-compat .settings-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.admin-compat .settings-form .full {
+    grid-column: auto !important;
+  }
+
+  body.admin-compat .admin-modal {
+    inset: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+  }
+
+  /* 16px evita zoom involuntário no Safari/iOS */
+  body.admin-compat input,
+  body.admin-compat select,
+  body.admin-compat textarea {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  body.admin-compat .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.admin-compat .admin-topbar h1 {
+    max-width: 34vw;
+  }
+
+  body.admin-compat .health-item {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+  }
+
+  body.admin-compat .order-card,
+  body.admin-compat .order-card-v4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Fallback para browsers sem dvh */
+@supports not (height: 100dvh) {
+  body.admin-compat .admin-sidebar {
+    height: 100vh !important;
+    min-height: 100vh !important;
+  }
+
+  @media (max-width: 760px) {
+    body.admin-compat .admin-modal {
+      height: 100vh !important;
+    }
+  }
+}
