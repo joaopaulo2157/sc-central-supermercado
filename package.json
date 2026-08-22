@@ -1,13 +1,13 @@
 {
-  "name": "sc-central-supermercado-v6-final",
-  "version": "6.0.0",
+  "name": "sc-central-supermercado",
+  "version": "1.0.0",
   "private": true,
-  "description": "Supermercado SC Central V6 Final - catálogo profissional, venda por peso, categorias, importação CSV, relatórios, PWA, SQLite, painel e WhatsApp.",
+  "description": "Supermercado SC Central - catálogo, pedidos, painel administrativo, WhatsApp, PWA e banco PostgreSQL no Supabase.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "check": "node --check server.js && node --check src/db.js && node --check src/security.js && node --check src/integrations.js && node --check public/v4-boot.js && node --check public/v4-store.js && node --check public/v6.js && node --check public/admin-v4.js && node --check public/admin-v6.js && node --check public/login.js && node --check public/v3.js && node --check public/sw.js",
+    "check": "node --check server.js && node --check src/supabase.js && node --check src/security.js && node --check src/integrations.js && node --check public/v4-boot.js && node --check public/v4-store.js && node --check public/v6.js && node --check public/admin-v4.js && node --check public/admin-v6.js && node --check public/login.js && node --check public/v3.js && node --check public/sw.js",
     "ci": "npm run check"
   },
   "engines": {
@@ -27,7 +27,8 @@
     "ecommerce",
     "whatsapp",
     "nodejs",
-    "sqlite",
+    "supabase",
+    "postgresql",
     "pwa"
   ]
 }
