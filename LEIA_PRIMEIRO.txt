@@ -1,24 +1,32 @@
-CORREÇÃO DO PUBLICADOR SUPABASE
+SC CENTRAL — FINALIZAR PUBLICAÇÃO SUPABASE
 
-O erro:
-  cannot pull with rebase: You have unstaged changes
+SITUAÇÃO ATUAL
+O commit:
+  e61416c fix: separa liveness do healthcheck do Supabase
 
-acontecia porque havia alterações locais rastreadas que o script anterior
-não adicionava ao commit.
+já foi criado localmente.
+
+O push não aconteceu porque existem outras alterações rastreadas
+fora desse commit.
 
 ESTE SCRIPT:
-- executa npm run check;
-- verifica se .env real está sendo rastreado e bloqueia por segurança;
-- adiciona todas as modificações de arquivos já rastreados (git add -u);
-- adiciona somente os novos arquivos conhecidos da integração Supabase;
-- NÃO adiciona arquivos aleatórios não rastreados;
-- cria commit;
-- executa git pull --rebase origin main;
-- executa git push origin main;
-- nunca usa force push;
-- nunca apaga alterações locais.
+- valida o projeto;
+- impede publicação acidental de .env;
+- adiciona todas as alterações de arquivos JÁ rastreados;
+- adiciona apenas os novos arquivos conhecidos da integração Supabase;
+- não adiciona arquivos aleatórios não rastreados;
+- cria um segundo commit apenas se necessário;
+- faz git fetch origin;
+- faz git rebase origin/main;
+- faz git push origin main;
+- não usa force push;
+- não apaga alterações locais.
 
-COMO USAR:
-1. Copie CONECTAR_SUPABASE.bat para a raiz do repositório SC Central.
-2. Substitua o arquivo anterior.
-3. Execute-o novamente.
+USO
+1. Extraia FINALIZAR_PUBLICACAO_SUPABASE.bat na raiz do repositório.
+2. Execute-o.
+3. Aguarde o Railway fazer o deploy.
+4. Teste:
+   https://sccentral.up.railway.app/api/live
+5. Depois:
+   https://sccentral.up.railway.app/api/health
