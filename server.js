@@ -1024,6 +1024,17 @@ async function handleApi(req, res, url) {
   const pathname = url.pathname;
   const method = req.method || 'GET';
 
+  if (method === 'GET' && pathname === '/api/live') {
+    return sendJson(res, 200, {
+      ok: true,
+      service: 'sc-central',
+      runtime: 'node',
+      databaseTarget: 'supabase',
+      projectRef: supabase.PROJECT_REF,
+      time: now()
+    });
+  }
+
   if (method === 'GET' && pathname === '/api/health') {
     const connection = await supabase.testConnection();
 
