@@ -120,7 +120,6 @@
       if (e.loading) {
         const text=e.loading.querySelector('strong');
         if(text) text.textContent = `Falha ao iniciar o painel: ${error?.message || 'erro inesperado'}`;
-        setTimeout(()=>e.loading?.classList.add('hidden'),5000);
       }
       return false;
     }
@@ -131,11 +130,11 @@
     const role=canonicalRole(state.user?.role);
     document.body.dataset.adminRole=role;
 
-    $$$('.admin-nav button[data-tab]').forEach(node => {
+    document.querySelectorAll('.admin-nav button[data-tab]').forEach(node => {
       node.style.display=canTab(node.dataset.tab)?'':'none';
     });
 
-    $$$('[data-min-role]').forEach(node => {
+    document.querySelectorAll('[data-min-role]').forEach(node => {
       if (node.dataset.tab) return;
       const allowed=can(node.dataset.minRole);
       node.style.display=allowed?'':'none';
@@ -162,7 +161,7 @@
     const button=$(`[data-tab="${tab}"]`);
     if (!button || button.style.display === 'none' || !canTab(tab)) tab=canonicalRole(state.user?.role)==='cadastrador'?'products':'dashboard';
     state.activeTab=tab;
-    $$('.admin-nav button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+    document.querySelectorAll('.admin-nav button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
     $$('.admin-tab').forEach(node=>node.classList.toggle('active',node.id===`tab-${tab}`));
     const names={dashboard:'Dashboard',products:'Produtos',categories:'Categorias',import:'Importar produtos',banners:'Banners',coupons:'Cupons',delivery:'Entrega',orders:'Pedidos',customers:'Clientes',reports:'Relatórios',users:'Usuários',audit:'Auditoria',settings:'Configurações'};
     e.pageTitle.textContent=names[tab]||'Painel';
@@ -356,7 +355,7 @@
   async function exportBackup(){const data=await api('/api/admin/export');const blob=new Blob([JSON.stringify(data.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`sc-central-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup exportado.');}
 
   function bindEvents(){
-    $$('.admin-nav button[data-tab]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
+    document.querySelectorAll('.admin-nav button[data-tab]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
     document.addEventListener('click',ev=>{const go=ev.target.closest('[data-go-tab]');if(go)switchTab(go.dataset.goTab);const close=ev.target.closest('[data-close-modal]');if(close)closeModal();});
     e.menu.addEventListener('click',()=>{
       const open=!e.sidebar.classList.contains('open');
